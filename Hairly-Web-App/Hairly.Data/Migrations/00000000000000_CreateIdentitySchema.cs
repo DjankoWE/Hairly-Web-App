@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Hairly.Web.Data.Migrations
+namespace Hairly.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

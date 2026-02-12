@@ -1,4 +1,4 @@
-namespace Hairly.Web.Models
+namespace Hairly.Web.ViewModels
 {
     public class ErrorViewModel
     {

@@ -1,16 +1,14 @@
-using System.Diagnostics;
-using Hairly.Web.Models;
+using Hairly.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Hairly.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            
         }
 
         public IActionResult Index()

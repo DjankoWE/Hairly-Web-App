@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hairly.Web.Data
+namespace Hairly.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

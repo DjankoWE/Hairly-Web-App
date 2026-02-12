@@ -1,4 +1,4 @@
-using Hairly.Web.Data;
+using Hairly.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
