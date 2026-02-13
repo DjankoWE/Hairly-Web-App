@@ -2,5 +2,23 @@
 {
     public static class ValidationConstants
     {
+        // Client
+        public const int ClientFirstNameMinLength = 2;
+        public const int ClientFirstNameMaxLength = 100;
+        public const int ClientLastNameMinLength = 2;
+        public const int ClientLastNameMaxLength = 100;
+        public const string ClientPhoneNumberRegex = @"^(?:\+359|0)8[7-9]\d{7}$"; 
+        public const int ClientEmailMaxLength = 100;
+        public const int ClientNotesMaxLength = 1000;
+
+
+        //Service
+        public const int ServiceNameMinLength = 2;
+        public const int ServiceNameMaxLength = 100;
+        public const int ServiceDescriptionMinLength = 5;
+        public const int ServiceDescriptionMaxLength = 1000;
+
+        // Appointment
+        public const int AppointmentNotesMaxLength = 500;
     }
 }
