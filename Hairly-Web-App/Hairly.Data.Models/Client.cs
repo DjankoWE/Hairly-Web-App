@@ -18,6 +18,7 @@ namespace Hairly.Data.Models
         public string LastName { get; set; } = null!;
 
         [Required]
+        [MaxLength(ClientPhoneNumberMaxLength)]
         [RegularExpression(ClientPhoneNumberRegex)]
         public string PhoneNumber { get; set; } = null!;
 

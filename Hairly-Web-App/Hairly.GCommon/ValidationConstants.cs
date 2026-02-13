@@ -7,6 +7,7 @@
         public const int ClientFirstNameMaxLength = 100;
         public const int ClientLastNameMinLength = 2;
         public const int ClientLastNameMaxLength = 100;
+        public const int ClientPhoneNumberMaxLength = 15;
         public const string ClientPhoneNumberRegex = @"^(?:\+359|0)8[7-9]\d{7}$"; 
         public const int ClientEmailMaxLength = 100;
         public const int ClientNotesMaxLength = 1000;
