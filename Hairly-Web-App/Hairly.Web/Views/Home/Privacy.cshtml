@@ -1,6 +1,46 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+	ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<h1 class="display-5 fw-bold mb-4">@ViewData["Title"]</h1>
+            
+			<div class="card shadow-sm mb-4">
+				<div class="card-body p-4">
+					<h2 class="h4 mb-3">Data Storage</h2>
+					<p>
+						Hairly stores information about your clients, services and appointments in a secure database. 
+						All data is accessible only to you and is protected with modern encryption methods.
+					</p>
+				</div>
+			</div>
+
+			<div class="card shadow-sm mb-4">
+				<div class="card-body p-4">
+					<h2 class="h4 mb-3">Security</h2>
+					<p>
+						Your password is encrypted and no one, including system administrators, 
+						can see it. We recommend using a strong password.
+					</p>
+				</div>
+			</div>
+
+			<div class="card shadow-sm mb-4">
+				<div class="card-body p-4">
+					<h2 class="h4 mb-3">Information Sharing</h2>
+					<p>
+						Hairly does not share your data with third parties. The information is used solely 
+						for the operation of the application.
+					</p>
+				</div>
+			</div>
+
+			<div class="alert alert-info" role="alert">
+				<i class="bi bi-info-circle me-2"></i>
+				<strong>Important:</strong> This is an educational project. For production use, please contact the developers.
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,16 +1,13 @@
 using Hairly.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hairly.Web.Controllers
 {
-    public class HomeController : Controller
+    [AllowAnonymous]
+    public class HomeController : BaseController
     {
-        public HomeController()
-        {
-            
-        }
-
         public IActionResult Index()
         {
             return View();
