@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hairly.Data;
+using Hairly.Data.Models;
 using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Client;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,26 @@ namespace Hairly.Services.Core
                 .ThenByDescending(c => c.TotalAppointments)
                 .ToListAsync();
 
+        }
+
+        public async Task<bool> CreateClientAsync(ClientCreateViewModel viewModel, string? hairdresserId)
+        {
+            var client = new Client
+            {
+                FirstName = viewModel.FirstName,
+                LastName = viewModel.LastName,
+                PhoneNumber = viewModel.PhoneNumber,
+                Email = viewModel.Email,
+                Note = viewModel.Note,
+                HairdresserId = hairdresserId!,
+                CreatedOn = DateTime.Now,
+                IsDeleted = false
+            };
+
+            await dbContext.Clients.AddAsync(client);
+            await dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }
