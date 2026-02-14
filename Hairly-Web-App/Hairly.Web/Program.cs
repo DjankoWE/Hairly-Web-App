@@ -1,4 +1,6 @@
 using Hairly.Data;
+using Hairly.Services.Core;
+using Hairly.Services.Core.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +15,15 @@ namespace Hairly.Web
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
+            // DB context
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // Services
+            builder.Services.AddScoped<IClientService, ClientService>();
+
+            // Identity
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
                 {
                     // Development settings !!!

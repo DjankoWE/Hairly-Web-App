@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hairly.Data\Hairly.Data.csproj" />
+    <ProjectReference Include="..\Hairly.Services.Core\Hairly.Services.Core.csproj" />
     <ProjectReference Include="..\Hairly.Web.ViewModels\Hairly.Web.ViewModels.csproj" />
   </ItemGroup>
 
