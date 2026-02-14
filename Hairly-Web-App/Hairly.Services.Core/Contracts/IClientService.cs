@@ -7,5 +7,9 @@ namespace Hairly.Services.Core.Contracts
         Task<IEnumerable<ClientIndexViewModel>> GetAllClientsAsync(string? hairdresserId);
 
         Task<bool> CreateClientAsync(ClientCreateViewModel viewModel, string? hairdresserId);
+
+        Task<ClientEditViewModel?> GetClientForEditAsync(int id, string? hairdresserId);
+
+        Task<bool> UpdateClientAsync(ClientEditViewModel viewModel, string? hairdresserId);
     }
 }

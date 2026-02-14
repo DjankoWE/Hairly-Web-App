@@ -49,5 +49,45 @@ namespace Hairly.Web.Controllers
             ModelState.AddModelError(string.Empty, "An error occured while creating the client!");
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            string? hairdresserId = GetUserId();
+            ClientEditViewModel? viewModel = await clientService.GetClientForEditAsync(id, hairdresserId);
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ClientEditViewModel viewModel)
+        {
+            if (id != viewModel.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            string? hairdresserId = GetUserId();
+            bool isUpdated = await clientService.UpdateClientAsync(viewModel, hairdresserId);
+
+            if (isUpdated)
+            {
+                TempData["SuccessMessage"] = "Client updated successfully!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError(string.Empty, "An error occured while updating the client!");
+            return View(viewModel);
+        }
     }
 }
