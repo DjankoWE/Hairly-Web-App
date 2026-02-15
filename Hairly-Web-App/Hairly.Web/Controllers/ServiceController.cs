@@ -49,5 +49,46 @@ namespace Hairly.Web.Controllers
             ModelState.AddModelError(string.Empty, "An error occurred while creating the service. Please try again.");
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            string hairdresserId = GetUserId();
+            var service = await serviceService.GetServiceForEditAsync(id, hairdresserId);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+
+            return View(service);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ServiceEditViewModel viewModel)
+        {
+            if (id != viewModel.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            string hairdresserId = GetUserId();
+            bool isUpdated = await serviceService.UpdateServiceAsync(viewModel, hairdresserId);
+
+            if (isUpdated)
+            {
+                TempData["SuccessMessage"] = "Service updated successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError(string.Empty, "An error occurred while updating the service. Please try again.");
+            return View(viewModel);
+        }
     }
 }

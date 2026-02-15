@@ -1,0 +1,108 @@
+﻿@using Hairly.Web.ViewModels.Service;
+
+@model ServiceEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Service";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-action="Index" class="text-decoration-none">
+                                <i class="bi bi-scissors me-1"></i>Services
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    </ol>
+                </nav>
+                <h1 class="display-6 fw-bold mb-1">
+                    <i class="bi bi-pencil-square text-primary me-2"></i>Edit Service
+                </h1>
+                <p class="text-muted">Update service information below</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Service Name -->
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-semibold">
+                                Service Name <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-scissors"></i>
+                                </span>
+                                <input asp-for="Name" class="form-control form-control-lg" />
+                            </div>
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold">
+                                Description <span class="text-muted">(optional)</span>
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-4">
+                            <label asp-for="Price" class="form-label fw-semibold">
+                                Price (EUR) <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-currency-euro"></i>
+                                </span>
+                                <input asp-for="Price" class="form-control form-control-lg"
+                                       type="number" step="0.01" min="0.01" />
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="mb-4">
+                            <label asp-for="DurationInMinutes" class="form-label fw-semibold">
+                                Duration (minutes) <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-clock"></i>
+                                </span>
+                                <input asp-for="DurationInMinutes" class="form-control form-control-lg"
+                                       type="number" min="5" max="480" />
+                            </div>
+                            <span asp-validation-for="DurationInMinutes" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 justify-content-end mt-4 pt-3 border-top">
+                            <a asp-action="Index" class="btn btn-lg btn-outline-secondary px-4">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-lg btn-primary px-4">
+                                <i class="bi bi-check-circle me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
