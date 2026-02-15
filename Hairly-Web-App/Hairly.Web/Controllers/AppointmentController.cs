@@ -107,7 +107,23 @@ namespace Hairly.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occurred while updating the appointment. Please try again.");
+            ModelState.AddModelError(string.Empty,
+                "An error occurred while updating the appointment. Please try again.");
+            return View(viewModel);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            string hairdresserId = GetUserId();
+            var viewModel = await appointmentService.GetAppointmentDetailsAsync(id, hairdresserId);
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
             return View(viewModel);
         }
     }

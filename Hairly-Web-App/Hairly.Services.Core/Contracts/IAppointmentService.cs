@@ -13,5 +13,7 @@ namespace Hairly.Services.Core.Contracts
         Task<AppointmentEditViewModel?> GetAppointmentForEditAsync(int id, string hairdresserId);
 
         Task<bool> UpdateAppointmentAsync(AppointmentEditViewModel viewModel, string hairdresserId);
+
+        Task<AppointmentDetailsViewModel> GetAppointmentDetailsAsync(int id, string hairdresserId);
     }
 }
