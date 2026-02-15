@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hairly.Web.ViewModels.Service
+﻿namespace Hairly.Web.ViewModels.Service
 {
     public class ServiceIndexViewModel
     {

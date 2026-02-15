@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Appointment\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Hairly.Data.Models\Hairly.Data.Models.csproj" />
     <ProjectReference Include="..\Hairly.GCommon\Hairly.GCommon.csproj" />
   </ItemGroup>
 
