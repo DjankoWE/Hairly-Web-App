@@ -1,4 +1,5 @@
 ﻿using Hairly.Data;
+using Hairly.Data.Models;
 using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Service;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,31 @@ namespace Hairly.Services.Core
                 })
                 .OrderBy(s => s.Name)
                 .ToListAsync();
+        }
+
+        public async Task<bool> CreateServiceAsync(ServiceCreateViewModel viewModel, string hairdresserId)
+        {
+            try
+            {
+                var service = new Service
+                {
+                    Name = viewModel.Name,
+                    Description = viewModel.Description,
+                    Price = viewModel.Price,
+                    DurationInMinutes = viewModel.DurationInMinutes,
+                    HairdresserId = hairdresserId,
+                    IsDeleted = false
+                };
+
+                await dbContext.Services.AddAsync(service);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

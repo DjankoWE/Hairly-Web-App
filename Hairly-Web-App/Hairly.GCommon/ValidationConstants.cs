@@ -18,6 +18,10 @@
         public const int ServiceNameMaxLength = 100;
         public const int ServiceDescriptionMinLength = 5;
         public const int ServiceDescriptionMaxLength = 1000;
+        public const string ServicePriceMinValue = "5";
+        public const string ServicePriceMaxValue = "1000";
+        public const int ServiceDurationInMinutesMinValue = 5; 
+        public const int ServiceDurationInMinutesMaxValue = 480;
 
         // Appointment
         public const int AppointmentNotesMaxLength = 500;

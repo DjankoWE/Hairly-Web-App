@@ -5,5 +5,7 @@ namespace Hairly.Services.Core.Contracts
     public interface IServiceService
     {
         Task<IEnumerable<ServiceIndexViewModel>> GetAllServicesAsync(string hairdresserId);
+
+        Task<bool> CreateServiceAsync(ServiceCreateViewModel viewModel, string hairdresserId);
     }
 }
