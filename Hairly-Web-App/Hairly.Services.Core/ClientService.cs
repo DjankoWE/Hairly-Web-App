@@ -109,5 +109,35 @@ namespace Hairly.Services.Core
                 return false;
             }
         }
+
+        public async Task<ClientDetailsViewModel> GetClientDetailsAsync(int id, string? hairdresserId)
+        {
+            return await dbContext.Clients
+                .Where(c => c.Id == id && c.HairdresserId == hairdresserId && !c.IsDeleted)
+                .Select(c => new ClientDetailsViewModel
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    PhoneNumber = c.PhoneNumber,
+                    Email = c.Email,
+                    Note = c.Note,
+                    CreatedOn = c.CreatedOn,
+                    RecentAppointments = c.Appointments
+                        .Where(a => !a.IsDeleted)
+                        .OrderByDescending(a => a.AppointmentDate)
+                        .Take(10)
+                        .Select(a => new ClientAppointmentViewModel
+                        {
+                            Id = a.Id,
+                            AppointmentDate = a.AppointmentDate,
+                            ServiceName = a.Service.Name,
+                            ServicePrice = a.Service.Price,
+                            Status = a.Status.ToString()
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync() ?? throw new InvalidOperationException("Client not found.");
+        }
     }
 }

@@ -89,5 +89,20 @@ namespace Hairly.Web.Controllers
             ModelState.AddModelError(string.Empty, "An error occured while updating the client!");
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            string? hairdresserId = GetUserId();
+
+            ClientDetailsViewModel? viewModel = await clientService.GetClientDetailsAsync(id, hairdresserId);
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
     }
 }
