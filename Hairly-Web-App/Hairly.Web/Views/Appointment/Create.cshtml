@@ -1,0 +1,122 @@
+﻿@using Hairly.Web.ViewModels.Appointment;
+
+@model AppointmentCreateViewModel
+
+@{
+    ViewData["Title"] = "New Appointment";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-action="Index" class="text-decoration-none">
+                                <i class="bi bi-calendar-check me-1"></i>Appointments
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">New</li>
+                    </ol>
+                </nav>
+                <h1 class="display-6 fw-bold mb-1">
+                    <i class="bi bi-plus-circle text-primary me-2"></i>New Appointment
+                </h1>
+                <p class="text-muted">Schedule a new appointment</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Client -->
+                        <div class="mb-4">
+                            <label asp-for="ClientId" class="form-label fw-semibold">
+                                Client <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="ClientId" class="form-select form-select-lg">
+                                <option value="">-- Select Client --</option>
+                                @foreach (var client in Model.Clients)
+                                {
+                                    <option value="@client.Key">@client.Value</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ClientId" class="text-danger small"></span>
+                            @if (!Model.Clients.Any())
+                            {
+                                <div class="form-text text-warning">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>
+                                    No clients available. <a asp-controller="Client" asp-action="Create">Create a client first</a>.
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Service -->
+                        <div class="mb-4">
+                            <label asp-for="ServiceId" class="form-label fw-semibold">
+                                Service <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="ServiceId" class="form-select form-select-lg">
+                                <option value="">-- Select Service --</option>
+                                @foreach (var service in Model.Services)
+                                {
+                                    <option value="@service.Key">@service.Value</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger small"></span>
+                            @if (!Model.Services.Any())
+                            {
+                                <div class="form-text text-warning">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>
+                                    No services available. <a asp-controller="Service" asp-action="Create">Create a service first</a>.
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Appointment Date & Time -->
+                        <div class="mb-4">
+                            <label asp-for="AppointmentDate" class="form-label fw-semibold">
+                                Date & Time <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="AppointmentDate" type="datetime-local" class="form-control form-control-lg" />
+                            <span asp-validation-for="AppointmentDate" class="text-danger small"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Select the date and time for the appointment
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="mb-4">
+                            <label asp-for="Note" class="form-label fw-semibold">
+                                Notes <span class="text-muted">(optional)</span>
+                            </label>
+                            <textarea asp-for="Note" class="form-control" rows="3"
+                                      placeholder="Any special requests or notes..."></textarea>
+                            <span asp-validation-for="Note" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 justify-content-end mt-4 pt-3 border-top">
+                            <a asp-action="Index" class="btn btn-lg btn-outline-secondary px-4">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-lg btn-primary px-4"
+                                    @((!Model.Clients.Any() || !Model.Services.Any()) ? "disabled" : "")>
+                                <i class="bi bi-check-circle me-2"></i>Create Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
