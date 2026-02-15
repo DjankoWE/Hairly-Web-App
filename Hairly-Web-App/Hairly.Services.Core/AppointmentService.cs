@@ -108,5 +108,90 @@ namespace Hairly.Services.Core
                 return false;
             }
         }
+
+        public async Task<AppointmentEditViewModel?> GetAppointmentForEditAsync(int id, string hairdresserId)
+        {
+            var appointment = await dbContext.Appointments
+                .Where(a => a.Id == id && a.HairdresserId == hairdresserId && !a.IsDeleted)
+                .Select(a => new AppointmentEditViewModel
+                {
+                    Id = a.Id,
+                    ClientId = a.ClientId,
+                    ServiceId = a.ServiceId,
+                    AppointmentDate = a.AppointmentDate,
+                    Status = a.Status,
+                    Note = a.Note
+                })
+                .FirstOrDefaultAsync();
+
+            if (appointment == null)
+            {
+                return null;
+            }
+
+            var clientsList = await dbContext.Clients
+                .Where(c => c.HairdresserId == hairdresserId && !c.IsDeleted)
+                .OrderBy(c => c.FirstName)
+                .ThenBy(c => c.LastName)
+                .ToListAsync();
+
+            appointment.Clients = clientsList.ToDictionary
+                (
+                    c => c.Id,
+                    c => $"{c.FirstName} {c.LastName}"
+                );
+
+            var servicesList = await dbContext.Services
+                .Where(s => s.HairdresserId == hairdresserId && !s.IsDeleted)
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+
+            appointment.Services = servicesList.ToDictionary
+                (
+                    s => s.Id,
+                    s => s.Name
+                );
+
+            return appointment;
+        }
+
+        public async Task<bool> UpdateAppointmentAsync(AppointmentEditViewModel viewModel, string hairdresserId)
+        {
+            try
+            {
+                var appointment = await dbContext.Appointments
+                    .FirstOrDefaultAsync(a => a.Id == viewModel.Id && a.HairdresserId == hairdresserId && !a.IsDeleted);
+
+                if (appointment == null)
+                {
+                    return false;
+                }
+
+                var clientExists = await dbContext.Clients
+                    .AnyAsync(c => c.Id == viewModel.ClientId && c.HairdresserId == hairdresserId && !c.IsDeleted);
+
+                var serviceExists = await dbContext.Services
+                    .AnyAsync(s => s.Id == viewModel.ServiceId && s.HairdresserId == hairdresserId && !s.IsDeleted);
+
+                if (!clientExists || !serviceExists)
+                {
+                    return false;
+                }
+
+                appointment.ClientId = viewModel.ClientId;
+                appointment.ServiceId = viewModel.ServiceId;
+                appointment.AppointmentDate = viewModel.AppointmentDate;
+                appointment.Status = viewModel.Status;
+                appointment.Note = viewModel.Note;
+
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

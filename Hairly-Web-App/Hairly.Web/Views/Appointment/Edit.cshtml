@@ -1,0 +1,123 @@
+﻿@using Hairly.Web.ViewModels.Appointment;
+
+@model AppointmentEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Appointment";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-action="Index" class="text-decoration-none">
+                                <i class="bi bi-calendar-check me-1"></i>Appointments
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    </ol>
+                </nav>
+                <h1 class="display-6 fw-bold mb-1">
+                    <i class="bi bi-pencil-square text-primary me-2"></i>Edit Appointment
+                </h1>
+                <p class="text-muted">Update appointment information</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Client Dropdown -->
+                        <div class="mb-4">
+                            <label asp-for="ClientId" class="form-label fw-semibold">
+                                Client <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="ClientId" class="form-select form-select-lg">
+                                <option value="">-- Select Client --</option>
+                                @foreach (var client in Model.Clients)
+                                {
+                                    <option value="@client.Key">@client.Value</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ClientId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Service Dropdown -->
+                        <div class="mb-4">
+                            <label asp-for="ServiceId" class="form-label fw-semibold">
+                                Service <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="ServiceId" class="form-select form-select-lg">
+                                <option value="">-- Select Service --</option>
+                                @foreach (var service in Model.Services)
+                                {
+                                    <option value="@service.Key">@service.Value</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Appointment Date & Time -->
+                        <div class="mb-4">
+                            <label asp-for="AppointmentDate" class="form-label fw-semibold">
+                                Date & Time <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="AppointmentDate" type="datetime-local" class="form-control form-control-lg" />
+                            <span asp-validation-for="AppointmentDate" class="text-danger small"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Select the date and time for the appointment
+                            </div>
+                        </div>
+
+                        <!-- Status Dropdown -->
+                        <div class="mb-4">
+                            <label asp-for="Status" class="form-label fw-semibold">
+                                Status <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="Status" class="form-select form-select-lg"
+                                    asp-items="Html.GetEnumSelectList<Hairly.Data.Models.Enums.AppointmentStatus>()">
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Update the appointment status
+                            </div>
+                        </div>
+
+                        <!-- Notes (Optional) -->
+                        <div class="mb-4">
+                            <label asp-for="Note" class="form-label fw-semibold">
+                                Notes <span class="text-muted">(optional)</span>
+                            </label>
+                            <textarea asp-for="Note" class="form-control" rows="3"
+                                      placeholder="Any special requests or notes..."></textarea>
+                            <span asp-validation-for="Note" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 justify-content-end mt-4 pt-3 border-top">
+                            <a asp-action="Index" class="btn btn-lg btn-outline-secondary px-4">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-lg btn-primary px-4">
+                                <i class="bi bi-check-circle me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

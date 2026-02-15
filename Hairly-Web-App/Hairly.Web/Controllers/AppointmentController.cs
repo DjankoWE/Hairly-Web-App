@@ -55,7 +55,59 @@ namespace Hairly.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occurred while creating the appointment. Please try again.");
+            ModelState.AddModelError(string.Empty,
+                "An error occurred while creating the appointment. Please try again.");
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            string hairdresserId = GetUserId();
+            var viewModel = await appointmentService.GetAppointmentForEditAsync(id, hairdresserId);
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, AppointmentEditViewModel viewModel)
+        {
+            if (id != viewModel.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                string hairdresserId = GetUserId();
+
+                var reloadedModel = await appointmentService.GetAppointmentForEditAsync(id, hairdresserId);
+
+                if (reloadedModel != null)
+                {
+                    viewModel.Clients = reloadedModel.Clients;
+                    viewModel.Services = reloadedModel.Services;
+                }
+
+                return View(viewModel);
+            }
+
+            string userId = GetUserId();
+            bool isUpdated = await appointmentService.UpdateAppointmentAsync(viewModel, userId);
+
+            if (isUpdated)
+            {
+                TempData["SuccessMessage"] = "Appointment updated successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError(string.Empty, "An error occurred while updating the appointment. Please try again.");
             return View(viewModel);
         }
     }
