@@ -90,5 +90,39 @@ namespace Hairly.Web.Controllers
             ModelState.AddModelError(string.Empty, "An error occurred while updating the service. Please try again.");
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            string hairdresserId = GetUserId();
+            var service = await serviceService.GetServiceForDeleteAsync(id, hairdresserId);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+
+            return View(service);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            string hairdresserId = GetUserId();
+            bool isDeleted = await serviceService.DeleteServiceAsync(id, hairdresserId);
+
+            if (isDeleted)
+            {
+                TempData["SuccessMessage"] = "Service deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting the service. Please try again.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

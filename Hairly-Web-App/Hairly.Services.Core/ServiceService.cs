@@ -1,5 +1,6 @@
 ﻿using Hairly.Data;
 using Hairly.Data.Models;
+using Hairly.Data.Models.Enums;
 using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Service;
 using Microsoft.EntityFrameworkCore;
@@ -87,6 +88,44 @@ namespace Hairly.Services.Core
                 service.Description = viewModel.Description;
                 service.Price = viewModel.Price;
                 service.DurationInMinutes = viewModel.DurationInMinutes;
+
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<ServiceDeleteViewModel?> GetServiceForDeleteAsync(int id, string hairdresserId)
+        {
+            return await dbContext.Services
+                .Where(s => s.Id == id && s.HairdresserId == hairdresserId && !s.IsDeleted)
+                .Select(s => new ServiceDeleteViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Price = s.Price,
+                    ActiveAppointments = s.Appointments.Count(a => !a.IsDeleted && a.Status == AppointmentStatus.Scheduled)
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> DeleteServiceAsync(int id, string hairdresserId)
+        {
+            try
+            {
+                var service = await dbContext.Services
+                    .FirstOrDefaultAsync(s => s.Id == id && s.HairdresserId == hairdresserId && !s.IsDeleted);
+
+                if (service == null)
+                {
+                    return false;
+                }
+
+                service.IsDeleted = true;
 
                 await dbContext.SaveChangesAsync();
 
