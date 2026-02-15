@@ -139,5 +139,42 @@ namespace Hairly.Services.Core
                 })
                 .FirstOrDefaultAsync() ?? throw new InvalidOperationException("Client not found.");
         }
+
+        public async Task<ClientDeleteViewModel> GetClientForDeleteAsync(int id, string? hairdresserId)
+        {
+            return await dbContext.Clients
+                .Where(c => c.Id == id && c.HairdresserId == hairdresserId && !c.IsDeleted)
+                .Select(c => new ClientDeleteViewModel
+                {
+                    Id = c.Id,
+                    FullName = $"{c.FirstName} {c.LastName}",
+                    PhoneNumber = c.PhoneNumber,
+                    TotalAppointments = c.Appointments.Count(a => !a.IsDeleted)
+                })
+                .FirstOrDefaultAsync() ?? throw new InvalidOperationException("Client not found.");
+        }
+
+        public async Task<bool> DeleteClientAsync(int id, string? hairdresserId)
+        {
+            try
+            {
+                var client = await dbContext.Clients
+                    .FirstOrDefaultAsync(c => c.Id == id && c.HairdresserId == hairdresserId && !c.IsDeleted);
+
+                if (client == null)
+                {
+                    return false;
+                }
+
+                client.IsDeleted = true;
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

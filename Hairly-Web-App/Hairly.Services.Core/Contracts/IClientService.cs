@@ -13,5 +13,9 @@ namespace Hairly.Services.Core.Contracts
         Task<bool> UpdateClientAsync(ClientEditViewModel viewModel, string? hairdresserId);
 
         Task<ClientDetailsViewModel> GetClientDetailsAsync(int id, string? hairdresserId);
+
+        Task<ClientDeleteViewModel> GetClientForDeleteAsync(int id, string? hairdresserId);
+
+        Task<bool> DeleteClientAsync(int id, string? hairdresserId);
     }
 }
