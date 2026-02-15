@@ -16,7 +16,7 @@ namespace Hairly.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
             var clients = await clientService.GetAllClientsAsync(hairdresserId);
 
             return View(clients);
@@ -29,6 +29,7 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -36,7 +37,7 @@ namespace Hairly.Web.Controllers
                 return View(viewModel);
             }
 
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
 
             bool isCreated = await clientService.CreateClientAsync(viewModel, hairdresserId);
 
@@ -46,14 +47,14 @@ namespace Hairly.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occured while creating the client!");
+            ModelState.AddModelError(string.Empty, "An error occurred while creating the client!");
             return View(viewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
             ClientEditViewModel? viewModel = await clientService.GetClientForEditAsync(id, hairdresserId);
 
             if (viewModel == null)
@@ -65,6 +66,7 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClientEditViewModel viewModel)
         {
             if (id != viewModel.Id)
@@ -77,7 +79,7 @@ namespace Hairly.Web.Controllers
                 return View(viewModel);
             }
 
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
             bool isUpdated = await clientService.UpdateClientAsync(viewModel, hairdresserId);
 
             if (isUpdated)
@@ -86,14 +88,14 @@ namespace Hairly.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occured while updating the client!");
+            ModelState.AddModelError(string.Empty, "An error occurred while updating the client!");
             return View(viewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
 
             ClientDetailsViewModel? viewModel = await clientService.GetClientDetailsAsync(id, hairdresserId);
 
@@ -108,7 +110,7 @@ namespace Hairly.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
             ClientDeleteViewModel? viewModel = await clientService.GetClientForDeleteAsync(id, hairdresserId);
 
             if (viewModel == null)
@@ -120,9 +122,10 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            string? hairdresserId = GetUserId();
+            string hairdresserId = GetUserId();
             bool isDeleted = await clientService.DeleteClientAsync(id, hairdresserId);
 
             if (isDeleted)
@@ -131,7 +134,7 @@ namespace Hairly.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["ErrorMessage"] = "An error occured while deleting the client!";
+            TempData["ErrorMessage"] = "An error occurred while deleting the client!";
             return RedirectToAction(nameof(Index));
         }
     }

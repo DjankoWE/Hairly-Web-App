@@ -7,9 +7,9 @@ namespace Hairly.Web.Controllers
     [Authorize]
     public class BaseController : Controller
     {
-        protected string? GetUserId()
+        protected string GetUserId()
         {
-            return User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         }
     }
 }

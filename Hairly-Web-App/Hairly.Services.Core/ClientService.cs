@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hairly.Data;
+﻿using Hairly.Data;
 using Hairly.Data.Models;
 using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Client;
@@ -20,7 +15,7 @@ namespace Hairly.Services.Core
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<ClientIndexViewModel>> GetAllClientsAsync(string? hairdresserId)
+        public async Task<IEnumerable<ClientIndexViewModel>> GetAllClientsAsync(string hairdresserId)
         {
             return await dbContext.Clients
                 .Where(c => c.HairdresserId == hairdresserId && !c.IsDeleted)
@@ -40,7 +35,7 @@ namespace Hairly.Services.Core
 
         }
 
-        public async Task<bool> CreateClientAsync(ClientCreateViewModel viewModel, string? hairdresserId)
+        public async Task<bool> CreateClientAsync(ClientCreateViewModel viewModel, string hairdresserId)
         {
             try
             {
@@ -67,7 +62,7 @@ namespace Hairly.Services.Core
             }
         }
 
-        public async Task<ClientEditViewModel?> GetClientForEditAsync(int id, string? hairdresserId)
+        public async Task<ClientEditViewModel?> GetClientForEditAsync(int id, string hairdresserId)
         {
             return await dbContext.Clients
                 .Where(c => c.Id == id && c.HairdresserId == hairdresserId && !c.IsDeleted)
@@ -83,7 +78,7 @@ namespace Hairly.Services.Core
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> UpdateClientAsync(ClientEditViewModel viewModel, string? hairdresserId)
+        public async Task<bool> UpdateClientAsync(ClientEditViewModel viewModel, string hairdresserId)
         {
             try
             {
@@ -110,7 +105,7 @@ namespace Hairly.Services.Core
             }
         }
 
-        public async Task<ClientDetailsViewModel> GetClientDetailsAsync(int id, string? hairdresserId)
+        public async Task<ClientDetailsViewModel> GetClientDetailsAsync(int id, string hairdresserId)
         {
             return await dbContext.Clients
                 .Where(c => c.Id == id && c.HairdresserId == hairdresserId && !c.IsDeleted)
@@ -140,7 +135,7 @@ namespace Hairly.Services.Core
                 .FirstOrDefaultAsync() ?? throw new InvalidOperationException("Client not found.");
         }
 
-        public async Task<ClientDeleteViewModel> GetClientForDeleteAsync(int id, string? hairdresserId)
+        public async Task<ClientDeleteViewModel> GetClientForDeleteAsync(int id, string hairdresserId)
         {
             return await dbContext.Clients
                 .Where(c => c.Id == id && c.HairdresserId == hairdresserId && !c.IsDeleted)
@@ -154,7 +149,7 @@ namespace Hairly.Services.Core
                 .FirstOrDefaultAsync() ?? throw new InvalidOperationException("Client not found.");
         }
 
-        public async Task<bool> DeleteClientAsync(int id, string? hairdresserId)
+        public async Task<bool> DeleteClientAsync(int id, string hairdresserId)
         {
             try
             {
