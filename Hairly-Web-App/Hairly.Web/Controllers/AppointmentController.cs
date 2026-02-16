@@ -55,8 +55,13 @@ namespace Hairly.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty,
-                "An error occurred while creating the appointment. Please try again.");
+            string errorHairdresserId = GetUserId();
+            var errorReloadedModel = await appointmentService.GetAppointmentCreateModelAsync(errorHairdresserId);
+
+            viewModel.Clients = errorReloadedModel.Clients;
+            viewModel.Services = errorReloadedModel.Services;
+
+            ModelState.AddModelError(string.Empty, "An error occurred while creating the appointment. Please try again.");
             return View(viewModel);
         }
 
