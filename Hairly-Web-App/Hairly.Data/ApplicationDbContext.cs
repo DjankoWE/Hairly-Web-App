@@ -51,6 +51,16 @@ namespace Hairly.Data
                 .HasForeignKey(a => a.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Global query filters for soft delete
+            builder.Entity<Client>()
+                .HasQueryFilter(c => !c.IsDeleted);
+
+            builder.Entity<Service>()
+                .HasQueryFilter(s => !s.IsDeleted);
+
+            builder.Entity<Appointment>()
+                .HasQueryFilter(a => !a.IsDeleted);
+
 
             var defaultHairdresser = new IdentityUser
             {

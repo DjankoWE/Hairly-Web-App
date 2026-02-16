@@ -28,28 +28,7 @@ namespace Hairly.Web
             // Identity
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
                 {
-                    // Development settings !!!
-
-                    // SignIn settings
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.SignIn.RequireConfirmedEmail = false;
-                    options.SignIn.RequireConfirmedPhoneNumber = false;
-
-                    // User settings
-                    options.User.RequireUniqueEmail = true;
-
-                    // Password settings
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequiredLength = 4;
-                    options.Password.RequiredUniqueChars = 0;
-
-                    // Lockout settings
-                    options.Lockout.MaxFailedAccessAttempts = 25;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-
+                    ConfigureDefaultIdentityOptions(options);
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
@@ -82,6 +61,30 @@ namespace Hairly.Web
             app.MapRazorPages();
 
             app.Run();
+        }
+
+        private static void ConfigureDefaultIdentityOptions(IdentityOptions options)
+        {
+            // SignIn settings
+            options.SignIn.RequireConfirmedAccount = false;
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+
+            // User settings
+            options.User.RequireUniqueEmail = true;
+
+            // Password settings
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequiredLength = 6;
+            options.Password.RequiredUniqueChars = 3;
+
+            // Lockout settings
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
         }
     }
 }
