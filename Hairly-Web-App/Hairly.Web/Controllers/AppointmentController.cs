@@ -126,5 +126,36 @@ namespace Hairly.Web.Controllers
 
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            string hairdresserId = GetUserId();
+            var viewModel = await appointmentService.GetAppointmentForDeleteAsync(id, hairdresserId);
+
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            string hairdresserId = GetUserId();
+            bool isDeleted = await appointmentService.DeleteAppointmentAsync(id, hairdresserId);
+
+            if (isDeleted)
+            {
+                TempData["SuccessMessage"] = "Appointment deleted successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["ErrorMessage"] = "An error occurred while deleting the appointment. Please try again.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

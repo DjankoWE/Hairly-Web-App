@@ -194,7 +194,7 @@ namespace Hairly.Services.Core
             }
         }
 
-        public async Task<AppointmentDetailsViewModel> GetAppointmentDetailsAsync(int id, string hairdresserId)
+        public async Task<AppointmentDetailsViewModel?> GetAppointmentDetailsAsync(int id, string hairdresserId)
         {
             return await dbContext.Appointments
                 .Where(a => a.Id == id && a.HairdresserId == hairdresserId && !a.IsDeleted)
@@ -222,7 +222,48 @@ namespace Hairly.Services.Core
                     Note = a.Note,
                     CreatedOn = a.CreatedOn
                 })
-                .FirstOrDefaultAsync() ?? throw new InvalidOperationException("Appointment not found.");
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<AppointmentDeleteViewModel?> GetAppointmentForDeleteAsync(int id, string hairdresserId)
+        {
+            return await dbContext.Appointments
+                .Where(a => a.Id == id && a.HairdresserId == hairdresserId && !a.IsDeleted)
+                .Include(a => a.Client)
+                .Include(a => a.Service)
+                .Select(a => new AppointmentDeleteViewModel
+                {
+                    Id = a.Id,
+                    AppointmentDate = a.AppointmentDate,
+                    ClientFullName = $"{a.Client.FirstName} {a.Client.LastName}",
+                    ServiceName = a.Service.Name,
+                    Status = a.Status
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> DeleteAppointmentAsync(int id, string hairdresserId)
+        {
+            try
+            {
+                var appointment = await dbContext.Appointments
+                    .FirstOrDefaultAsync(a => a.Id == id && a.HairdresserId == hairdresserId && !a.IsDeleted);
+
+                if (appointment == null)
+                {
+                    return false;
+                }
+
+                appointment.IsDeleted = true;
+
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
