@@ -38,5 +38,7 @@ namespace Hairly.Data.Models
         public virtual IdentityUser Hairdresser { get; set; } = null!;
 
         public virtual ICollection<Appointment> Appointments { get; set; } = new HashSet<Appointment>();
+
+        public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
     }
 }

@@ -25,5 +25,20 @@
 
         // Appointment
         public const int AppointmentNotesMaxLength = 500;
+
+        // Product
+        public const int ProductNameMinLength = 2;
+        public const int ProductNameMaxLength = 100;
+        public const int ProductDescriptionMaxLength = 1000;
+        public const string ProductPriceMinValue = "0.01";
+        public const string ProductPriceMaxValue = "500.00";
+        public const int ProductQuantityMin = 0;
+        public const int ProductQuantityMax = 1000;
+        public const int ProductImageUrlMaxLength = 2048;
+
+        // Review
+        public const int ReviewRatingMin = 1;
+        public const int ReviewRatingMax = 5;
+        public const int ReviewCommentMaxLength = 1000;
     }
 }

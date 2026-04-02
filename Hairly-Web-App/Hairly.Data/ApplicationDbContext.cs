@@ -16,6 +16,8 @@ namespace Hairly.Data
         public virtual DbSet<Client> Clients { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
         public virtual DbSet<Appointment> Appointments { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<Review> Reviews { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,7 +53,19 @@ namespace Hairly.Data
                 .HasForeignKey(a => a.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Global query filters for soft delete
+            builder.Entity<Review>()
+                .HasOne(r => r.Client)
+                .WithMany(c => c.Reviews)
+                .HasForeignKey(r => r.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.Appointment)
+                .WithMany(a => a.Reviews)
+                .HasForeignKey(r => r.AppointmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             builder.Entity<Client>()
                 .HasQueryFilter(c => !c.IsDeleted);
 
@@ -60,6 +74,9 @@ namespace Hairly.Data
 
             builder.Entity<Appointment>()
                 .HasQueryFilter(a => !a.IsDeleted);
+
+            builder.Entity<Review>()
+                .HasQueryFilter(r => !r.IsDeleted);
 
 
             var defaultHairdresser = new IdentityUser
@@ -74,11 +91,8 @@ namespace Hairly.Data
                         new IdentityUser { UserName = "stylist@hairly.com" }, 
                         "Hairly123!")
             };
-
             builder.Entity<IdentityUser>().HasData(defaultHairdresser);
 
-
-            // Seed services
             builder.Entity<Service>().HasData(
                 new Service
                 {
@@ -202,8 +216,6 @@ namespace Hairly.Data
                 }
             );
 
-
-            // Seed clients
             builder.Entity<Client>().HasData(
                 new Client
                 {
@@ -320,9 +332,7 @@ namespace Hairly.Data
                 }
             );
 
-            // Seed appointments
             builder.Entity<Appointment>().HasData(
-                // Минали часове (Completed)
                 new Appointment
                 {
                     Id = 1,
@@ -380,7 +390,6 @@ namespace Hairly.Data
                     CreatedOn = new DateTime(2026, 1, 25),
                     IsDeleted = false
                 },
-                // Отменени
                 new Appointment
                 {
                     Id = 6,
@@ -393,7 +402,6 @@ namespace Hairly.Data
                     CreatedOn = new DateTime(2026, 1, 20),
                     IsDeleted = false
                 },
-                // NoShow
                 new Appointment
                 {
                     Id = 7,
@@ -406,7 +414,6 @@ namespace Hairly.Data
                     CreatedOn = new DateTime(2026, 2, 1),
                     IsDeleted = false
                 },
-                // Предстоящи часове (Scheduled) - ВАЖНО: Задай реални бъдещи дати
                 new Appointment
                 {
                     Id = 8,
