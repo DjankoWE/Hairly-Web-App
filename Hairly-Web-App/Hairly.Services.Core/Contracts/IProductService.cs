@@ -15,5 +15,9 @@ namespace Hairly.Services.Core.Contracts
         Task<ProductEditViewModel?> GetProductEditModelAsync(int id);
 
         Task<bool> UpdateProductAsync(ProductEditViewModel model);
+
+        Task<ProductDeleteViewModel?> GetProductDeleteModelAsync(int id);
+
+        Task<bool> DeleteProductAsync(int id);
     }
 }

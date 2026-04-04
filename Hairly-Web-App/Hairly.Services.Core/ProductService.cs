@@ -122,5 +122,42 @@ namespace Hairly.Services.Core
                 return false;
             }
         }
+
+        public async Task<ProductDeleteViewModel?> GetProductDeleteModelAsync(int id)
+        {
+            return await dbContext.Products
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDeleteViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    QuantityInStock = p.QuantityInStock
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            try
+            {
+                var product = await dbContext.Products
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (product == null)
+                {
+                    return false;
+                }
+
+                product.IsDeleted = true;
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

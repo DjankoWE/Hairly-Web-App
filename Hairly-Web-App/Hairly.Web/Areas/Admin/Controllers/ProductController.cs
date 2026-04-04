@@ -101,5 +101,34 @@ namespace Hairly.Web.Areas.Admin.Controllers
             ModelState.AddModelError(string.Empty, ProductUpdateError);
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await productService.GetProductDeleteModelAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            bool isDeleted = await productService.DeleteProductAsync(id);
+
+            if (isDeleted)
+            {
+                TempData[SuccessMessageKey] = ProductDeletedSuccessfully;
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData[ErrorMessageKey] = ProductDeleteError;
+            return RedirectToAction(nameof(Delete), new { id });
+        }
     }
 }
