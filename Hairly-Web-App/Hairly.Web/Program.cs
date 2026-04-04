@@ -24,6 +24,7 @@ namespace Hairly.Web
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<IServiceService, ServiceService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
                 {
