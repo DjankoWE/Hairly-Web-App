@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hairly.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Hairdresser, Admin")]
     public class BaseController : Controller
     {
         protected string GetUserId()

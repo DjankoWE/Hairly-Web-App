@@ -79,20 +79,6 @@ namespace Hairly.Data
                 .HasQueryFilter(r => !r.IsDeleted);
 
 
-            var defaultHairdresser = new IdentityUser
-            {
-                Id = "3dbb52f6-6024-4dd6-ad4b-e1c782bbd23d",
-                UserName = "stylist@hairly.com",
-                NormalizedUserName = "STYLIST@HAIRLY.COM",
-                Email = "stylist@hairly.com",
-                NormalizedEmail = "STYLIST@HAIRLY.COM",
-                EmailConfirmed = true,
-                PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(
-                        new IdentityUser { UserName = "stylist@hairly.com" }, 
-                        "Hairly123!")
-            };
-            builder.Entity<IdentityUser>().HasData(defaultHairdresser);
-
             builder.Entity<Service>().HasData(
                 new Service
                 {

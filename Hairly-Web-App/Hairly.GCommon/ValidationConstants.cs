@@ -2,7 +2,6 @@
 {
     public static class ValidationConstants
     {
-        // Client
         public const int ClientFirstNameMinLength = 2;
         public const int ClientFirstNameMaxLength = 100;
         public const int ClientLastNameMinLength = 2;
@@ -12,8 +11,6 @@
         public const int ClientEmailMaxLength = 100;
         public const int ClientNotesMaxLength = 1000;
 
-
-        //Service
         public const int ServiceNameMinLength = 2;
         public const int ServiceNameMaxLength = 100;
         public const int ServiceDescriptionMinLength = 5;
@@ -23,10 +20,8 @@
         public const int ServiceDurationInMinutesMinValue = 5; 
         public const int ServiceDurationInMinutesMaxValue = 480;
 
-        // Appointment
         public const int AppointmentNotesMaxLength = 500;
 
-        // Product
         public const int ProductNameMinLength = 2;
         public const int ProductNameMaxLength = 100;
         public const int ProductDescriptionMaxLength = 1000;
@@ -36,7 +31,6 @@
         public const int ProductQuantityMax = 1000;
         public const int ProductImageUrlMaxLength = 2048;
 
-        // Review
         public const int ReviewRatingMin = 1;
         public const int ReviewRatingMax = 5;
         public const int ReviewCommentMaxLength = 1000;
