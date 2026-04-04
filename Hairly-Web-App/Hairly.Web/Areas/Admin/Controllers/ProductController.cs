@@ -67,5 +67,39 @@ namespace Hairly.Web.Areas.Admin.Controllers
             ModelState.AddModelError(string.Empty, ProductCreateError);
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await productService.GetProductEditModelAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ProductEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool isUpdated = await productService.UpdateProductAsync(model);
+
+            if (isUpdated)
+            {
+                TempData[SuccessMessageKey] = ProductUpdatedSuccessfully;
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError(string.Empty, ProductUpdateError);
+            return View(model);
+        }
     }
 }

@@ -78,5 +78,49 @@ namespace Hairly.Services.Core
                 return false;
             }
         }
+
+        public async Task<ProductEditViewModel?> GetProductEditModelAsync(int id)
+        {
+            return await dbContext.Products
+                .Where(p => p.Id == id)
+                .Select(p => new ProductEditViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    QuantityInStock = p.QuantityInStock,
+                    ImageUrl = p.ImageUrl
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateProductAsync(ProductEditViewModel model)
+        {
+            try
+            {
+                var product = await dbContext.Products
+                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+
+                if (product == null)
+                {
+                    return false;
+                }
+
+                product.Name = model.Name;
+                product.Description = model.Description;
+                product.Price = model.Price;
+                product.QuantityInStock = model.QuantityInStock;
+                product.ImageUrl = model.ImageUrl;
+
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
