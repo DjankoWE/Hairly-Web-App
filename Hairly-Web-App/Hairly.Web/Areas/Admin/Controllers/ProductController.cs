@@ -26,5 +26,18 @@ namespace Hairly.Web.Areas.Admin.Controllers
             var products = await productService.GetAllProductsAsync();
             return View(products);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await productService.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
     }
 }

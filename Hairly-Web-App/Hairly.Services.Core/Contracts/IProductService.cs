@@ -5,5 +5,7 @@ namespace Hairly.Services.Core.Contracts
     public interface IProductService
     {
         Task<IEnumerable<ProductIndexViewModel>> GetAllProductsAsync();
+
+        Task<ProductDetailsViewModel?> GetProductByIdAsync(int id);
     }
 }

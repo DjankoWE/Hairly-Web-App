@@ -1,0 +1,80 @@
+﻿@using Hairly.Web.ViewModels.Product;
+
+@model ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-basket"></i> @Model.Name</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                        {
+                            <div class="col-md-5 text-center mb-3">
+                                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;" />
+                            </div>
+                            <div class="col-md-7">
+                                <h5>@Model.Name</h5>
+                                <p class="text-muted">@(Model.Description ?? "No description available")</p>
+                                <hr />
+                                <dl class="row">
+                                    <dt class="col-sm-4">Price</dt>
+                                    <dd class="col-sm-8"><h4 class="text-primary">€@Model.Price.ToString("F2")</h4></dd>
+
+                                    <dt class="col-sm-4">Availability</dt>
+                                    <dd class="col-sm-8">
+                                        @if (Model.QuantityInStock > 0)
+                                        {
+                                            <span class="badge bg-success">In Stock (@Model.QuantityInStock units)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Out of Stock</span>
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <h5>@Model.Name</h5>
+                                <p class="text-muted">@(Model.Description ?? "No description available")</p>
+                                <hr />
+                                <dl class="row">
+                                    <dt class="col-sm-3">Price</dt>
+                                    <dd class="col-sm-9"><h4 class="text-primary">@Model.Price.ToString("C")</h4></dd>
+
+                                    <dt class="col-sm-3">Availability</dt>
+                                    <dd class="col-sm-9">
+                                        @if (Model.QuantityInStock > 0)
+                                        {
+                                            <span class="badge bg-success">In Stock (@Model.QuantityInStock units)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Out of Stock</span>
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

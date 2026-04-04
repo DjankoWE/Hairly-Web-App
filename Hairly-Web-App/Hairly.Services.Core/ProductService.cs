@@ -30,5 +30,22 @@ namespace Hairly.Services.Core
                 .Where(p => !p.IsDeleted)
                 .ToListAsync();
         }
+
+        public async Task<ProductDetailsViewModel?> GetProductByIdAsync(int id)
+        {
+            return await dbContext.Products
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDetailsViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    QuantityInStock = p.QuantityInStock,
+                    ImageUrl = p.ImageUrl,
+                    CreatedOn = p.CreatedOn
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }
