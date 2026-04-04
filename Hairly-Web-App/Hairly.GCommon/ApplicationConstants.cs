@@ -14,5 +14,23 @@
 
         public const string DefaultHairdresserEmail = "hairdresser@hairly.com";
         public const string DefaultHairdresserPassword = "Hairdresser123!";
+
+        public class ErrorMessages
+        {
+            public const string ErrorMessageKey = "ErrorMessage";
+
+            public const string ProductCreateError = "An error occurred while creating the product.";
+            public const string ProductUpdateError = "An error occurred while updating the product.";
+            public const string ProductDeleteError = "An error occurred while deleting the product.";
+        }
+
+        public class SuccessMessages
+        {
+            public const string SuccessMessageKey = "SuccessMessage";
+
+            public const string ProductCreatedSuccessfully = "Product created successfully.";
+            public const string ProductUpdatedSuccessfully = "Product updated successfully.";
+            public const string ProductDeletedSuccessfully = "Product deleted successfully.";
+        }
     }
 }
