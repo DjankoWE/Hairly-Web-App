@@ -34,6 +34,10 @@
             public const string ProductCreateError = "An error occurred while creating the product.";
             public const string ProductUpdateError = "An error occurred while updating the product.";
             public const string ProductDeleteError = "An error occurred while deleting the product.";
+
+            public const string ReviewCreateError = "An error occurred while creating the review.";
+            public const string ReviewDeleteError = "An error occurred while deleting the review.";
+            public const string ReviewNotAllowed = "You can only review completed appointments.";
         }
 
         public class SuccessMessages
@@ -55,6 +59,9 @@
             public const string ProductCreatedSuccessfully = "Product created successfully.";
             public const string ProductUpdatedSuccessfully = "Product updated successfully.";
             public const string ProductDeletedSuccessfully = "Product deleted successfully.";
+
+            public const string ReviewCreatedSuccessfully = "Review created successfully.";
+            public const string ReviewDeletedSuccessfully = "Review deleted successfully.";
         }
     }
 }
