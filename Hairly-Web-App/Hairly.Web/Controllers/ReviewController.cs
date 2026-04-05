@@ -24,5 +24,18 @@ namespace Hairly.Web.Controllers
             var reviews = await reviewService.GetAllReviewsAsync();
             return View(reviews);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var review = await reviewService.GetReviewByIdAsync(id);
+
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return View(review);
+        }
     }
 }
