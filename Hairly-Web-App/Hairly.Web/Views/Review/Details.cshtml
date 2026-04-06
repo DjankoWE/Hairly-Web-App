@@ -1,0 +1,84 @@
+﻿@using Hairly.Web.ViewModels.Review;
+
+@model ReviewDetailsViewModel
+
+@{
+    ViewData["Title"] = "Review Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="bi bi-star-fill"></i> Review Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="display-3 mb-2">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.Rating)
+                                {
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star text-muted"></i>
+                                }
+                            }
+                        </div>
+                        <h3 class="text-warning">@Model.Rating out of 5</h3>
+                    </div>
+
+                    <hr />
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Comment))
+                    {
+                        <div class="mb-4">
+                            <h5>Comment:</h5>
+                            <blockquote class="blockquote">
+                                <p class="mb-0">"@Model.Comment"</p>
+                            </blockquote>
+                        </div>
+
+                        <hr />
+                    }
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Client</dt>
+                        <dd class="col-sm-8">@Model.ClientName</dd>
+
+                        <dt class="col-sm-4">Hairdresser</dt>
+                        <dd class="col-sm-8">@Model.HairdresserName</dd>
+
+                        <dt class="col-sm-4">Service</dt>
+                        <dd class="col-sm-8">@Model.ServiceName</dd>
+
+                        <dt class="col-sm-4">Appointment Date</dt>
+                        <dd class="col-sm-8">@Model.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Review Date</dt>
+                        <dd class="col-sm-8">@Model.CreatedOn.ToString("dd/MM/yyyy HH:mm")</dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Reviews
+                        </a>
+
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+	                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+		                            <i class="bi bi-trash"></i> Delete Review
+	                            </a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
