@@ -10,7 +10,7 @@ namespace Hairly.Web.Areas.Admin.Controllers
 {
     [Area(AdminAreaName)]
     [Authorize(Roles = AdminRoleName)]
-    [Route("Admin/[controller]/[action]")]
+    [Route("Admin/[controller]")]
     public class ProductController : Controller
     {
         private readonly IProductService productService;
@@ -21,13 +21,14 @@ namespace Hairly.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var products = await productService.GetAllProductsAsync();
             return View(products);
         }
 
-        [HttpGet]
+        [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var product = await productService.GetProductByIdAsync(id);
@@ -40,14 +41,14 @@ namespace Hairly.Web.Areas.Admin.Controllers
             return View(product);
         }
 
-        [HttpGet]
+        [HttpGet("Create")]
         public async Task<IActionResult> Create()
         {
             var model = await productService.GetProductCreateModelAsync();
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateViewModel model)
         {
@@ -68,7 +69,7 @@ namespace Hairly.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var model = await productService.GetProductEditModelAsync(id);
@@ -81,7 +82,7 @@ namespace Hairly.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEditViewModel model)
         {
@@ -102,7 +103,7 @@ namespace Hairly.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var model = await productService.GetProductDeleteModelAsync(id);
@@ -115,7 +116,7 @@ namespace Hairly.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost("Delete/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
