@@ -39,6 +39,8 @@
             public const string ReviewDeleteError = "An error occurred while deleting the review.";
             public const string ReviewNotAllowed = "You can only review completed appointments.";
             public const string ReviewNotAuthorized = "You are not authorized to review this appointment.";
+
+            public const string UserAppointmentBookingError = "Failed to book appointment.";
         }
 
         public class SuccessMessages
@@ -63,6 +65,8 @@
 
             public const string ReviewCreatedSuccessfully = "Review created successfully.";
             public const string ReviewDeletedSuccessfully = "Review deleted successfully.";
+
+            public const string UserAppointmentBookedSuccessfully = "Appointment booked successfully!";
         }
     }
 }

@@ -33,5 +33,42 @@ namespace Hairly.Web.Controllers
 
             return View(appointments);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Book()
+        {
+            var model = await userAppointmentService.GetBookingModelAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Book(UserAppointmentBookViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model = await userAppointmentService.GetBookingModelAsync();
+                return View(model);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var isBooked = await userAppointmentService.BookAppointmentAsync(model, userId);
+
+            if (isBooked)
+            {
+                TempData[SuccessMessageKey] = UserAppointmentBookedSuccessfully;
+                return RedirectToAction(nameof(MyAppointments));
+            }
+
+            ModelState.AddModelError(string.Empty, UserAppointmentBookingError);
+            model = await userAppointmentService.GetBookingModelAsync();
+            return View(model);
+        }
     }
 }
