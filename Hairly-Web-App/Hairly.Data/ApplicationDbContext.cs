@@ -29,6 +29,12 @@ namespace Hairly.Data
                 .HasForeignKey(c => c.HairdresserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Client>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Service>()
                 .HasOne(s => s.Hairdresser)
                 .WithMany()

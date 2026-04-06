@@ -38,6 +38,7 @@
             public const string ReviewCreateError = "An error occurred while creating the review.";
             public const string ReviewDeleteError = "An error occurred while deleting the review.";
             public const string ReviewNotAllowed = "You can only review completed appointments.";
+            public const string ReviewNotAuthorized = "You are not authorized to review this appointment.";
         }
 
         public class SuccessMessages

@@ -271,9 +271,14 @@ namespace Hairly.Data.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HairdresserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Clients");
 
@@ -916,24 +921,6 @@ namespace Hairly.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "3dbb52f6-6024-4dd6-ad4b-e1c782bbd23d",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9545bd5-d9a5-4e33-a9e3-14a174654fe1",
-                            Email = "stylist@hairly.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "STYLIST@HAIRLY.COM",
-                            NormalizedUserName = "STYLIST@HAIRLY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECIHtEoApQQDtY18/Iv1FNc58JIm+Pqy5z72V90CQtu3TUc7m3AcR7wI3Qhhb88jRQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "562bc431-6712-4380-946e-476d07e49db4",
-                            TwoFactorEnabled = false,
-                            UserName = "stylist@hairly.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -1056,7 +1043,14 @@ namespace Hairly.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Hairdresser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Hairly.Data.Models.Review", b =>

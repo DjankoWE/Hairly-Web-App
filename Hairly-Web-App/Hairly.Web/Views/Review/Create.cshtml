@@ -1,0 +1,79 @@
+﻿@using Hairly.Web.ViewModels.Review;
+
+@model ReviewCreateViewModel
+
+@{
+    ViewData["Title"] = "Leave a Review";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="bi bi-star-fill"></i> Leave a Review</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-4">
+                        <h6 class="mb-2">Appointment Details:</h6>
+                        <p class="mb-1"><strong>Service:</strong> @Model.ServiceName</p>
+                        <p class="mb-1"><strong>Hairdresser:</strong> @Model.HairdresserName</p>
+                        <p class="mb-0"><strong>Date:</strong> @Model.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" asp-for="AppointmentId" />
+                        <input type="hidden" asp-for="ServiceName" />
+                        <input type="hidden" asp-for="HairdresserName" />
+                        <input type="hidden" asp-for="AppointmentDate" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Rating" class="form-label">Rating</label>
+                            <div class="rating-select">
+                                <div class="btn-group" role="group" aria-label="Rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        var radioId = "rating" + i;
+                                        var isChecked = i == 5;
+                                        <input type="radio" class="btn-check" name="Rating" id="@radioId" value="@i"
+                                               @(isChecked ? "checked" : "") />
+                                        <label class="btn btn-outline-warning" for="@radioId">
+                                            @for (int j = 1; j <= i; j++)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                            <span class="ms-1">(@i)</span>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Comment" class="form-label">Comment (Optional)</label>
+                            <textarea asp-for="Comment" class="form-control" rows="4"
+                                      placeholder="Share your experience with this service..."></textarea>
+                            <span asp-validation-for="Comment" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-controller="Appointment" asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Appointments
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-star-fill"></i> Submit Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

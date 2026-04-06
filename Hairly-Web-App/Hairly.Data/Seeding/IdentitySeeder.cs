@@ -61,6 +61,23 @@ namespace Hairly.Data.Seeding
                     await userManager.AddToRoleAsync(hairdresserUser, HairdresserRoleName);
                 }
             }
+
+            await AsignUserRoleToUsersAsync(userManager);
+        }
+
+        private static async Task AsignUserRoleToUsersAsync(UserManager<IdentityUser> userManager)
+        {
+            var allUsers = userManager.Users.ToList();
+
+            foreach (var user in allUsers)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+
+                if (!roles.Any())
+                {
+                    await userManager.AddToRoleAsync(user, UserRoleName);
+                }
+            }
         }
     }
 }

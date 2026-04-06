@@ -37,5 +37,56 @@ namespace Hairly.Web.Controllers
 
             return View(review);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Create(int appointmentId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var model = await reviewService.GetReviewCreateModelAsync(appointmentId, userId);
+
+            if (model == null)
+            {
+                TempData[ErrorMessageKey] = ReviewNotAllowed;
+                return RedirectToAction("Index", "Appointment");
+            }
+           
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ReviewCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            bool isCreated = await reviewService.CreateReviewAsync(model, userId);
+
+            if (isCreated)
+            {
+                TempData[SuccessMessageKey] = ReviewCreatedSuccessfully;
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError(string.Empty, ReviewCreateError);
+            return View(model);
+        }
     }
 }

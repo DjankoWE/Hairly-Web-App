@@ -7,5 +7,9 @@ namespace Hairly.Services.Core.Contracts
         Task<IEnumerable<ReviewIndexViewModel>> GetAllReviewsAsync();
 
         Task<ReviewDetailsViewModel?> GetReviewByIdAsync(int id);
+
+        Task<ReviewCreateViewModel?> GetReviewCreateModelAsync(int appointmentId, string userId);
+
+        Task<bool> CreateReviewAsync(ReviewCreateViewModel model, string userId);
     }
 }

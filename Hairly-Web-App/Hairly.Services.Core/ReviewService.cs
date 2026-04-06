@@ -60,5 +60,77 @@ namespace Hairly.Services.Core
                 })
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<ReviewCreateViewModel?> GetReviewCreateModelAsync(int appointmentId, string userId)
+        {
+            var appointment = await dbContext.Appointments
+                .Include(a => a.Client)
+                .Include(a => a.Service)
+                .Include(a => a.Hairdresser)
+                .FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+            if (appointment == null || appointment.Client.UserId != userId || appointment.Status != AppointmentStatus.Completed)
+            {
+                return null;
+            }
+
+            var existingReview = await dbContext.Reviews
+                .AnyAsync(r => r.AppointmentId == appointmentId);
+
+            if (existingReview)
+            {
+                return null;
+            }
+
+            return new ReviewCreateViewModel
+            {
+                AppointmentId = appointment.Id,
+                ServiceName = appointment.Service.Name,
+                HairdresserName = appointment.Hairdresser.UserName ?? "Unknown",
+                AppointmentDate = appointment.AppointmentDate
+            };
+        }
+
+        public async Task<bool> CreateReviewAsync(ReviewCreateViewModel model, string userId)
+        {
+            try
+            {
+                var appointment = await dbContext.Appointments
+                    .Include(a => a.Client)
+                    .FirstOrDefaultAsync(a => a.Id == model.AppointmentId);
+
+                if (appointment == null || appointment.Client.UserId != userId || appointment.Status != AppointmentStatus.Completed)
+                {
+                    return false;
+                }
+
+                var existingReview = await dbContext.Reviews
+                    .AnyAsync(r => r.AppointmentId == model.AppointmentId);
+
+                if (existingReview)
+                {
+                    return false;
+                }
+
+                var review = new Review
+                {
+                    ClientId = appointment.ClientId,
+                    AppointmentId = model.AppointmentId,
+                    Rating = model.Rating,
+                    Comment = model.Comment,
+                    CreatedOn = DateTime.UtcNow,
+                    IsDeleted = false
+                };
+
+                await dbContext.Reviews.AddAsync(review);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
