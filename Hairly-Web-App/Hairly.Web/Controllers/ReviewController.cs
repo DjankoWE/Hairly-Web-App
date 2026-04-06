@@ -88,5 +88,65 @@ namespace Hairly.Web.Controllers
             ModelState.AddModelError(string.Empty, ReviewCreateError);
             return View(model);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole(AdminRoleName);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var model = await reviewService.GetReviewDeleteModelAsync(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            var review = await reviewService.GetReviewByIdAsync(id);
+
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            if (!isAdmin)
+            {
+                TempData[ErrorMessageKey] = ReviewNotAuthorized;
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole(AdminRoleName);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            bool isDeleted = await reviewService.DeleteReviewAsync(id, userId, isAdmin);
+
+            if (isDeleted)
+            {
+                TempData[SuccessMessageKey] = ReviewDeletedSuccessfully;
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData[ErrorMessageKey] = ReviewDeleteError;
+            return RedirectToAction(nameof(Delete), new { id });
+        }
     }
 }

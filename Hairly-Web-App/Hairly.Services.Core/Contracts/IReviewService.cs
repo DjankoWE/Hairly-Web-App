@@ -11,5 +11,9 @@ namespace Hairly.Services.Core.Contracts
         Task<ReviewCreateViewModel?> GetReviewCreateModelAsync(int appointmentId, string userId);
 
         Task<bool> CreateReviewAsync(ReviewCreateViewModel model, string userId);
+
+        Task<ReviewDeleteViewModel?> GetReviewDeleteModelAsync(int id);
+
+        Task<bool> DeleteReviewAsync(int id, string userId, bool isAdmin);
     }
 }
