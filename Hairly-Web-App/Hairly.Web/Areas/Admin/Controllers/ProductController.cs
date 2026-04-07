@@ -1,4 +1,5 @@
 ﻿using Hairly.Services.Core.Contracts;
+using Hairly.Web.Helpers;
 using Hairly.Web.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace Hairly.Web.Areas.Admin.Controllers
     [Route("Admin/[controller]")]
     public class ProductController : Controller
     {
+        private const int PageSize = 10;
         private readonly IProductService productService;
 
         public ProductController(IProductService productService)
@@ -22,10 +24,18 @@ namespace Hairly.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [HttpGet("Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             var products = await productService.GetAllProductsAsync();
-            return View(products);
+            var paginatedProducts = PaginatedList<ProductIndexViewModel>
+                .Create(products.ToList(), pageNumber, PageSize);
+
+            return View(paginatedProducts);
         }
 
         [HttpGet("Details/{id}")]

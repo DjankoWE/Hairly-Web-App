@@ -1,6 +1,7 @@
 ﻿@using Hairly.Web.ViewModels.Product;
+@using Hairly.Web.Helpers;
 
-@model IEnumerable<ProductIndexViewModel>
+@model PaginatedList<ProductIndexViewModel>
 
 @{
     ViewData["Title"] = "Products";
@@ -19,43 +20,44 @@
     }
     else
     {
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach (var product in Model)
-            {
-                <div class="col">
-                    <div class="card h-100">
-                        @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
-                        {
-                            <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
-                        }
-                        else
-                        {
-                            <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <i class="bi bi-image text-white" style="font-size: 3rem;"></i>
-                            </div>
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">
-                                <strong>Price: </strong>€@product.Price.ToString("F2")<br />
-                                @if (product.QuantityInStock > 0)
-                                {
-                                    <span class="badge bg-success">In Stock (@product.QuantityInStock)</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">Out of Stock</span>
-                                }
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
-                                <i class="bi bi-eye"></i> View Details
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+	    <div class="row row-cols-1 row-cols-md-3 g-4">
+		    @foreach (var product in Model)
+		    {
+			    <div class="col">
+				    <div class="card h-100">
+					    @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+					    {
+						    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
+					    }
+					    else
+					    {
+						    <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+							    <i class="bi bi-image text-white" style="font-size: 3rem;"></i>
+						    </div>
+					    }
+					    <div class="card-body">
+						    <h5 class="card-title">@product.Name</h5>
+						    <p class="card-text">
+							    <strong>Price: </strong>€@product.Price.ToString("F2")<br />
+							    @if (product.QuantityInStock > 0)
+							    {
+								    <span class="badge bg-success">In Stock (@product.QuantityInStock)</span>
+							    }
+							    else
+							    {
+								    <span class="badge bg-danger">Out of Stock</span>
+							    }
+						    </p>
+					    </div>
+					    <div class="card-footer">
+						    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
+							    <i class="bi bi-eye"></i> View Details
+						    </a>
+					    </div>
+				    </div>
+			    </div>
+		    }
+	    </div>
+	    <partial name="_PaginationPartial" model="Model" />
     }
 </div>

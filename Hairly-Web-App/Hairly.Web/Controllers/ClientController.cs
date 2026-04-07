@@ -1,4 +1,5 @@
 ﻿using Hairly.Services.Core.Contracts;
+using Hairly.Web.Helpers;
 using Hairly.Web.ViewModels.Client;
 using Microsoft.AspNetCore.Mvc;
 using static Hairly.GCommon.ApplicationConstants.ErrorMessages;
@@ -8,6 +9,7 @@ namespace Hairly.Web.Controllers
 {
     public class ClientController : BaseController
     {
+        private const int PageSize = 10;
         private readonly IClientService clientService;
 
         public ClientController(IClientService clientService)
@@ -16,12 +18,19 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             string hairdresserId = GetUserId();
             var clients = await clientService.GetAllClientsAsync(hairdresserId);
+            var paginatedClients = PaginatedList<ClientIndexViewModel>
+                    .Create(clients.ToList(), pageNumber, PageSize);
 
-            return View(clients);
+            return View(paginatedClients);
         }
 
         [HttpGet]
