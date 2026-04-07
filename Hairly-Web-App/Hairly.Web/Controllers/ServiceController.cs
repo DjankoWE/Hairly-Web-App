@@ -1,6 +1,8 @@
 ﻿using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Service;
 using Microsoft.AspNetCore.Mvc;
+using static Hairly.GCommon.ApplicationConstants.ErrorMessages;
+using static Hairly.GCommon.ApplicationConstants.SuccessMessages;
 
 namespace Hairly.Web.Controllers
 {
@@ -42,11 +44,11 @@ namespace Hairly.Web.Controllers
 
             if (isCreated)
             {
-                TempData["SuccessMessage"] = "Service created successfully.";
+                TempData[SuccessMessageKey] = ServiceCreatedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occurred while creating the service. Please try again.");
+            ModelState.AddModelError(string.Empty, ServiceCreateError);
             return View(viewModel);
         }
 
@@ -83,11 +85,11 @@ namespace Hairly.Web.Controllers
 
             if (isUpdated)
             {
-                TempData["SuccessMessage"] = "Service updated successfully.";
+                TempData[SuccessMessageKey] = ServiceUpdatedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occurred while updating the service. Please try again.");
+            ModelState.AddModelError(string.Empty, ServiceUpdateError);
             return View(viewModel);
         }
 
@@ -115,11 +117,11 @@ namespace Hairly.Web.Controllers
 
             if (isDeleted)
             {
-                TempData["SuccessMessage"] = "Service deleted successfully.";
+                TempData[SuccessMessageKey] = ServiceDeletedSuccessfully;
             }
             else
             {
-                TempData["ErrorMessage"] = "An error occurred while deleting the service. Please try again.";
+                TempData[ErrorMessageKey] = ServiceDeleteError;
             }
 
             return RedirectToAction(nameof(Index));

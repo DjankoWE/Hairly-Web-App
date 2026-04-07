@@ -22,27 +22,60 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        @if (User.Identity!.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Client" asp-action="Index">
-                                    <i class="bi bi-people me-1"></i>Clients
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Service" asp-action="Index">
-                                    <i class="bi bi-scissors me-1"></i>Services
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Appointment" asp-action="Index">
-                                    <i class="bi bi-calendar-check me-1"></i>Appointments
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
+	                <ul class="navbar-nav me-auto">
+		                <li class="nav-item">
+			                <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">
+				                <i class="bi bi-basket"></i> Products
+			                </a>
+		                </li>
+		                <li class="nav-item">
+			                <a class="nav-link" asp-area="" asp-controller="Review" asp-action="Index">
+				                <i class="bi bi-star-fill"></i> Reviews
+			                </a>
+		                </li>
+
+						@if (User.IsInRole("Hairdresser") || User.IsInRole("Admin"))
+		                {
+			                <li class="nav-item">
+				                <a class="nav-link" asp-controller="Client" asp-action="Index">
+					                <i class="bi bi-people me-1"></i>Clients
+				                </a>
+			                </li>
+			                <li class="nav-item">
+				                <a class="nav-link" asp-controller="Service" asp-action="Index">
+					                <i class="bi bi-scissors me-1"></i>Services
+				                </a>
+			                </li>
+			                <li class="nav-item">
+				                <a class="nav-link" asp-controller="Appointment" asp-action="Index">
+					                <i class="bi bi-calendar-check me-1"></i>Appointments
+				                </a>
+			                </li>
+		                }
+
+		                @if (User.IsInRole("Admin"))
+		                {
+			                <li class="nav-item dropdown">
+				                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					                <i class="bi bi-shield-lock"></i> Admin
+				                </a>
+				                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+					                <li>
+						                <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">
+							                <i class="bi bi-pencil"></i> Manage Products
+						                </a>
+					                </li>
+					                <li><hr class="dropdown-divider"></li>
+					                <li>
+						                <a class="dropdown-item" href="#">
+							                <i class="bi bi-speedometer2"></i> Dashboard
+						                </a>
+					                </li>
+				                </ul>
+			                </li>
+		                }
+	                </ul>
+	                <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>

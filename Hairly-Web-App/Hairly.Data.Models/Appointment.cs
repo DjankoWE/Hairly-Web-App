@@ -35,5 +35,7 @@ namespace Hairly.Data.Models
         public AppointmentStatus Status { get; set; } = AppointmentStatus.Scheduled;
 
         public bool IsDeleted { get; set; } = false;
+
+        public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
     }
 }

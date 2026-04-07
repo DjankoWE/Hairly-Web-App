@@ -1,6 +1,8 @@
 ﻿using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Client;
 using Microsoft.AspNetCore.Mvc;
+using static Hairly.GCommon.ApplicationConstants.ErrorMessages;
+using static Hairly.GCommon.ApplicationConstants.SuccessMessages;
 
 namespace Hairly.Web.Controllers
 {
@@ -43,11 +45,11 @@ namespace Hairly.Web.Controllers
 
             if (isCreated)
             {
-                TempData["SuccessMessage"] = "Client created successfully!";
+                TempData[SuccessMessageKey] = ClientCreatedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occurred while creating the client!");
+            ModelState.AddModelError(string.Empty, ClientCreateError);
             return View(viewModel);
         }
 
@@ -84,11 +86,11 @@ namespace Hairly.Web.Controllers
 
             if (isUpdated)
             {
-                TempData["SuccessMessage"] = "Client updated successfully!";
+                TempData[SuccessMessageKey] = ClientUpdatedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty, "An error occurred while updating the client!");
+            ModelState.AddModelError(string.Empty, ClientUpdateError);
             return View(viewModel);
         }
 
@@ -130,11 +132,11 @@ namespace Hairly.Web.Controllers
 
             if (isDeleted)
             {
-                TempData["SuccessMessage"] = "Client deleted successfully!";
+                TempData[SuccessMessageKey] = ClientDeletedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["ErrorMessage"] = "An error occurred while deleting the client!";
+            TempData[ErrorMessageKey] = ClientDeleteError;
             return RedirectToAction(nameof(Index));
         }
     }

@@ -1,6 +1,8 @@
 ﻿using Hairly.Services.Core.Contracts;
 using Hairly.Web.ViewModels.Appointment;
 using Microsoft.AspNetCore.Mvc;
+using static Hairly.GCommon.ApplicationConstants.ErrorMessages;
+using static Hairly.GCommon.ApplicationConstants.SuccessMessages;
 
 namespace Hairly.Web.Controllers
 {
@@ -51,7 +53,7 @@ namespace Hairly.Web.Controllers
 
             if (isCreated)
             {
-                TempData["SuccessMessage"] = "Appointment created successfully.";
+                TempData[SuccessMessageKey] = AppointmentCreatedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -61,7 +63,7 @@ namespace Hairly.Web.Controllers
             viewModel.Clients = errorReloadedModel.Clients;
             viewModel.Services = errorReloadedModel.Services;
 
-            ModelState.AddModelError(string.Empty, "An error occurred while creating the appointment. Please try again.");
+            ModelState.AddModelError(string.Empty, AppointmentCreateError);
             return View(viewModel);
         }
 
@@ -108,12 +110,11 @@ namespace Hairly.Web.Controllers
 
             if (isUpdated)
             {
-                TempData["SuccessMessage"] = "Appointment updated successfully.";
+                TempData[SuccessMessageKey] = AppointmentUpdatedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            ModelState.AddModelError(string.Empty,
-                "An error occurred while updating the appointment. Please try again.");
+            ModelState.AddModelError(string.Empty, AppointmentUpdateError);
             return View(viewModel);
         }
 
@@ -155,11 +156,11 @@ namespace Hairly.Web.Controllers
 
             if (isDeleted)
             {
-                TempData["SuccessMessage"] = "Appointment deleted successfully.";
+                TempData[SuccessMessageKey] = AppointmentDeletedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["ErrorMessage"] = "An error occurred while deleting the appointment. Please try again.";
+            TempData[ErrorMessageKey] = AppointmentDeleteError;
             return RedirectToAction(nameof(Index));
         }
     }
