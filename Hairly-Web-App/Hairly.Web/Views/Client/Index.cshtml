@@ -1,14 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Hairly.Web.ViewModels.Client
+@using Hairly.Web.Helpers
 
-@model IEnumerable<ClientIndexViewModel>
+@model PaginatedList<ClientIndexViewModel>
 
 @{
     ViewData["Title"] = "Clients";
 }
 
 <div class="container-fluid">
-    <!-- Success Message -->
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
@@ -17,7 +17,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-    <!-- Error Message -->
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
@@ -26,6 +25,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
+
     <div class="row mb-4">
         <div class="col">
             <div class="d-flex justify-content-between align-items-center">
@@ -44,6 +44,31 @@
         </div>
     </div>
 
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="get" class="row g-2">
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-search me-1"></i>Search Clients
+                    </label>
+                    <input type="text" name="search" class="form-control"
+                           placeholder="Search by name or email..."
+                           value="@ViewData["CurrentSearch"]" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-x-circle me-1"></i> Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @if (!Model.Any())
     {
         <div class="row">
@@ -51,11 +76,23 @@
                 <div class="card border-0 shadow-sm text-center py-5">
                     <div class="card-body">
                         <i class="bi bi-people text-muted mb-3" style="font-size: 4rem; opacity: 0.3;"></i>
-                        <h3 class="h5 mb-3">No clients yet</h3>
-                        <p class="text-muted mb-4">Start building your client base by adding your first client.</p>
-                        <a asp-action="Create" class="btn btn-primary">
-                            <i class="bi bi-person-plus me-2"></i>Add Your First Client
-                        </a>
+
+                        @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
+                        {
+                            <h3 class="h5 mb-3">No clients found</h3>
+                            <p class="text-muted mb-4">No clients matching "@ViewData["CurrentSearch"]".</p>
+                            <a asp-action="Index" class="btn btn-outline-primary">
+                                <i class="bi bi-x-circle me-2"></i>Clear Search
+                            </a>
+                        }
+                        else
+                        {
+                            <h3 class="h5 mb-3">No clients yet</h3>
+                            <p class="text-muted mb-4">Start building your client base by adding your first client.</p>
+                            <a asp-action="Create" class="btn btn-primary">
+                                <i class="bi bi-person-plus me-2"></i>Add Your First Client
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
@@ -137,12 +174,14 @@
                     <div class="card-footer bg-light border-0 px-4 py-3">
                         <div class="text-muted">
                             <i class="bi bi-info-circle me-2"></i>
-                            Total clients: <strong>@Model.Count()</strong>
+                            Showing <strong>@Model.Count</strong> of <strong>@Model.TotalItems</strong> clients
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <partial name="_PaginationPartial" model="Model" />
     }
 </div>
 

@@ -1,4 +1,5 @@
 ﻿using Hairly.Services.Core.Contracts;
+using Hairly.Web.Helpers;
 using Hairly.Web.ViewModels.Client;
 using Microsoft.AspNetCore.Mvc;
 using static Hairly.GCommon.ApplicationConstants.ErrorMessages;
@@ -8,6 +9,7 @@ namespace Hairly.Web.Controllers
 {
     public class ClientController : BaseController
     {
+        private const int PageSize = 10;
         private readonly IClientService clientService;
 
         public ClientController(IClientService clientService)
@@ -16,12 +18,31 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search = null, int pageNumber = 1)
         {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             string hairdresserId = GetUserId();
             var clients = await clientService.GetAllClientsAsync(hairdresserId);
 
-            return View(clients);
+            if (!string.IsNullOrEmpty(search))
+            {
+                clients = clients.Where(c => c.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                        || c.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                        || c.LastName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                        || (c.Email != null && c.Email.Contains(search, StringComparison.OrdinalIgnoreCase))
+                                        );
+            }
+
+            var paginatedClients = PaginatedList<ClientIndexViewModel>
+                    .Create(clients.ToList(), pageNumber, PageSize);
+
+            ViewData["CurrentSearch"] = search;
+
+            return View(paginatedClients);
         }
 
         [HttpGet]

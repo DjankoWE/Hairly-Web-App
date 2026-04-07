@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ProductIndexViewModel>
+﻿@using Hairly.Web.Helpers
+
+@model PaginatedList<ProductIndexViewModel>
 
 @{
     ViewData["Title"] = "Products";
@@ -96,5 +98,6 @@
 				</tbody>
 			</table>
 		</div>
+		<partial name="_PaginationPartial" model="Model" />
 	}
 </div>

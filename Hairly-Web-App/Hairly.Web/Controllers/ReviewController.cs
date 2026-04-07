@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Hairly.Services.Core.Contracts;
+using Hairly.Web.Helpers;
 using Hairly.Web.ViewModels.Review;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace Hairly.Web.Controllers
 {
     public class ReviewController : Controller
     {
+        private const int PageSize = 5;
         private readonly IReviewService reviewService;
 
         public ReviewController(IReviewService reviewService)
@@ -19,10 +21,18 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             var reviews = await reviewService.GetAllReviewsAsync();
-            return View(reviews);
+            var paginatedReviews = PaginatedList<ReviewIndexViewModel>
+                .Create(reviews.ToList(), pageNumber, PageSize);
+
+            return View(paginatedReviews);
         }
 
         [HttpGet]

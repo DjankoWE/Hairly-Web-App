@@ -1,6 +1,7 @@
 ﻿@using Hairly.Web.ViewModels.Review;
+@using Hairly.Web.Helpers
 
-@model IEnumerable<ReviewIndexViewModel>
+@model PaginatedList<ReviewIndexViewModel>
 
 @{
     ViewData["Title"] = "Reviews";
@@ -106,5 +107,6 @@
 				</div>
 			}
 		</div>
+		<partial name="_PaginationPartial" model="Model" />
 	}
 </div>

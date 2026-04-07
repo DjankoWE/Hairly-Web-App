@@ -1,0 +1,77 @@
+﻿@using Hairly.Web.Helpers
+@model dynamic
+
+@{
+    var pageIndex = (int)Model.PageIndex;
+    var totalPages = (int)Model.TotalPages;
+    var hasPreviousPage = (bool)Model.HasPreviousPage;
+    var hasNextPage = (bool)Model.HasNextPage;
+
+    var queryParams = Context.Request.Query
+        .Where(q => q.Key != "pageNumber")
+        .Select(q => $"{q.Key}={q.Value}")
+        .ToList();
+    var queryString = queryParams.Any() ? "&" + string.Join("&", queryParams) : "";
+}
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item @(!hasPreviousPage ? "disabled" : "")">
+                <a class="page-link" href="?pageNumber=@(pageIndex - 1)@queryString">
+                    <i class="bi bi-chevron-left"></i> Previous
+                </a>
+            </li>
+
+            @{
+                int startPage = Math.Max(1, pageIndex - 2);
+                int endPage = Math.Min(totalPages, pageIndex + 2);
+            }
+
+            @if (startPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=1@queryString">1</a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == pageIndex ? "active" : "")">
+                    <a class="page-link" href="?pageNumber=@i@queryString">@i</a>
+                </li>
+            }
+
+            @if (endPage < totalPages)
+            {
+                @if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=@totalPages@queryString">@totalPages</a>
+                </li>
+            }
+
+            <li class="page-item @(!hasNextPage ? "disabled" : "")">
+                <a class="page-link" href="?pageNumber=@(pageIndex + 1)@queryString">
+                    Next <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="text-center text-muted small mt-2">
+            Page @pageIndex of @totalPages (@Model.TotalItems items total)
+        </div>
+    </nav>
+}
