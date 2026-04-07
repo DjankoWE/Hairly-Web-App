@@ -123,7 +123,7 @@ This project was built for the **ASP.NET Advanced** course at SoftUni (extended 
 ### Main Page
 > *Screenshot of the home page will go here*
 
-![Main Page Screenshot](screenshots/home-page.png)
+![Home Page Screenshot](screenshots/home-page.png)
 
 ### Client Management
 > *Screenshot of the clients list*
@@ -140,28 +140,28 @@ This project was built for the **ASP.NET Advanced** course at SoftUni (extended 
 
 ![Appointments Page Screenshot](screenshots/appointments-page.png)
 
-### Completed Appointments Only
-> *Screenshot of filtered completed appointments*
+### Completed Appointments Filter
+> *Screenshot of completed appointments*
 
 ![Completed Appointments Page Screenshot](screenshots/completed-appointments-page.png)
 
 ### User Appointments Page
-> *Screenshot of user appointments*
+> *Screenshot of user appointments page*
 
 ![User Appointments Page Screenshot](screenshots/user-appointments-page.png)
 
 ### Products Page
-> *Screenshot of the products page*
+> *Screenshot of products page*
 
 ![Products Page Screenshot](screenshots/products-page.png)
 
 ### Admin Products Page
-> *Screenshot of the manage products page*
+> *Screenshot of admin products page*
 
 ![Admin Products Page Screenshot](screenshots/admin-products-page.png)
 
 ### Reviews Page
-> *Screenshot of the reviews page*
+> *Screenshot of reviews page*
 
 ![Reviews Page Screenshot](screenshots/reviews-page.png)
 
