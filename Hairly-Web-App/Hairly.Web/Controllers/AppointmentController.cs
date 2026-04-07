@@ -1,4 +1,5 @@
-﻿using Hairly.Services.Core.Contracts;
+﻿using Hairly.Data.Models.Enums;
+using Hairly.Services.Core.Contracts;
 using Hairly.Web.Helpers;
 using Hairly.Web.ViewModels.Appointment;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1)
+        public async Task<IActionResult> Index(string status = null, string clientSearch = null, int pageNumber = 1)
         {
             if (pageNumber < 1)
             {
@@ -28,8 +29,25 @@ namespace Hairly.Web.Controllers
 
             string hairdresserId = GetUserId();
             var appointments = await appointmentService.GetAllAppointmentsAsync(hairdresserId);
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (Enum.TryParse<AppointmentStatus>(status, out var statusEnum))
+                {
+                    appointments = appointments.Where(a => a.Status == statusEnum);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(clientSearch))
+            {
+                appointments = appointments.Where(a => a.ClientFullName.Contains(clientSearch, StringComparison.OrdinalIgnoreCase));
+            }
+
             var paginatedAppointments = PaginatedList<AppointmentIndexViewModel>
                     .Create(appointments.ToList(), pageNumber, PageSize);
+
+            ViewData["CurrentStatus"] = status;
+            ViewData["CurrentClientSearch"] = clientSearch;
 
             return View(paginatedAppointments);
         }

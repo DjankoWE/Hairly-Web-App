@@ -16,7 +16,7 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1)
+        public async Task<IActionResult> Index(string searchName = null, int pageNumber = 1)
         {
             if (pageNumber < 1)
             {
@@ -24,8 +24,16 @@ namespace Hairly.Web.Controllers
             }
 
             var products = await productService.GetAllProductsAsync();
+
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                products = products.Where(p => p.Name.Contains(searchName, StringComparison.OrdinalIgnoreCase));
+            }
+
             var paginatedProducts = PaginatedList<ProductIndexViewModel>
                 .Create(products.ToList(), pageNumber, PageSize);
+
+            ViewData["CurrentSearch"] = searchName;
 
             return View(paginatedProducts);
         }

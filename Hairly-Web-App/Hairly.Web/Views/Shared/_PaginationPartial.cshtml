@@ -6,6 +6,12 @@
     var totalPages = (int)Model.TotalPages;
     var hasPreviousPage = (bool)Model.HasPreviousPage;
     var hasNextPage = (bool)Model.HasNextPage;
+
+    var queryParams = Context.Request.Query
+        .Where(q => q.Key != "pageNumber")
+        .Select(q => $"{q.Key}={q.Value}")
+        .ToList();
+    var queryString = queryParams.Any() ? "&" + string.Join("&", queryParams) : "";
 }
 
 @if (totalPages > 1)
@@ -13,24 +19,21 @@
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
 
-            @* Previous Button *@
             <li class="page-item @(!hasPreviousPage ? "disabled" : "")">
-                <a class="page-link" asp-route-pageNumber="@(pageIndex - 1)">
+                <a class="page-link" href="?pageNumber=@(pageIndex - 1)@queryString">
                     <i class="bi bi-chevron-left"></i> Previous
                 </a>
             </li>
 
-            @* Page Numbers *@
             @{
                 int startPage = Math.Max(1, pageIndex - 2);
                 int endPage = Math.Min(totalPages, pageIndex + 2);
             }
 
-            @* First page *@
             @if (startPage > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-route-pageNumber="1">1</a>
+                    <a class="page-link" href="?pageNumber=1@queryString">1</a>
                 </li>
                 @if (startPage > 2)
                 {
@@ -40,15 +43,13 @@
                 }
             }
 
-            @* Page number range *@
             @for (int i = startPage; i <= endPage; i++)
             {
                 <li class="page-item @(i == pageIndex ? "active" : "")">
-                    <a class="page-link" asp-route-pageNumber="@i">@i</a>
+                    <a class="page-link" href="?pageNumber=@i@queryString">@i</a>
                 </li>
             }
 
-            @* Last page *@
             @if (endPage < totalPages)
             {
                 @if (endPage < totalPages - 1)
@@ -58,19 +59,17 @@
                     </li>
                 }
                 <li class="page-item">
-                    <a class="page-link" asp-route-pageNumber="@totalPages">@totalPages</a>
+                    <a class="page-link" href="?pageNumber=@totalPages@queryString">@totalPages</a>
                 </li>
             }
 
-            @* Next Button *@
             <li class="page-item @(!hasNextPage ? "disabled" : "")">
-                <a class="page-link" asp-route-pageNumber="@(pageIndex + 1)">
+                <a class="page-link" href="?pageNumber=@(pageIndex + 1)@queryString">
                     Next <i class="bi bi-chevron-right"></i>
                 </a>
             </li>
         </ul>
 
-        @* Page info *@
         <div class="text-center text-muted small mt-2">
             Page @pageIndex of @totalPages (@Model.TotalItems items total)
         </div>

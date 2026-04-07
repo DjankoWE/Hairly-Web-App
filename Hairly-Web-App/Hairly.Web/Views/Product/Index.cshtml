@@ -12,52 +12,86 @@
         <h2><i class="bi bi-basket"></i> Our Products</h2>
     </div>
 
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="get" class="row g-2">
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-search me-1"></i>Search Products
+                    </label>
+                    <input type="text" name="searchName" class="form-control"
+                           placeholder="Search products by name..."
+                           value="@ViewData["CurrentSearch"]" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-x-circle me-1"></i> Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @if (!Model.Any())
     {
         <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i> No products available at the moment.
+            <i class="bi bi-info-circle"></i>
+            @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
+            {
+                <span>No products found matching "<strong>@ViewData["CurrentSearch"]</strong>". <a asp-action="Index" class="alert-link">Clear search</a></span>
+            }
+            else
+            {
+                <span>No products available at the moment.</span>
+            }
         </div>
     }
     else
     {
-	    <div class="row row-cols-1 row-cols-md-3 g-4">
-		    @foreach (var product in Model)
-		    {
-			    <div class="col">
-				    <div class="card h-100">
-					    @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
-					    {
-						    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
-					    }
-					    else
-					    {
-						    <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-							    <i class="bi bi-image text-white" style="font-size: 3rem;"></i>
-						    </div>
-					    }
-					    <div class="card-body">
-						    <h5 class="card-title">@product.Name</h5>
-						    <p class="card-text">
-							    <strong>Price: </strong>€@product.Price.ToString("F2")<br />
-							    @if (product.QuantityInStock > 0)
-							    {
-								    <span class="badge bg-success">In Stock (@product.QuantityInStock)</span>
-							    }
-							    else
-							    {
-								    <span class="badge bg-danger">Out of Stock</span>
-							    }
-						    </p>
-					    </div>
-					    <div class="card-footer">
-						    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
-							    <i class="bi bi-eye"></i> View Details
-						    </a>
-					    </div>
-				    </div>
-			    </div>
-		    }
-	    </div>
-	    <partial name="_PaginationPartial" model="Model" />
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                        {
+                            <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="bi bi-image text-white" style="font-size: 3rem;"></i>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">
+                                <strong>Price: </strong><span class="text-success fw-bold">€@product.Price.ToString("F2")</span><br />
+                                @if (product.QuantityInStock > 0)
+                                {
+                                    <span class="badge bg-success">In Stock (@product.QuantityInStock)</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Out of Stock</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
+                                <i class="bi bi-eye"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <partial name="_PaginationPartial" model="Model" />
     }
 </div>

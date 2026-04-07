@@ -18,7 +18,7 @@ namespace Hairly.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1)
+        public async Task<IActionResult> Index(string search = null, int pageNumber = 1)
         {
             if (pageNumber < 1)
             {
@@ -27,8 +27,20 @@ namespace Hairly.Web.Controllers
 
             string hairdresserId = GetUserId();
             var clients = await clientService.GetAllClientsAsync(hairdresserId);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                clients = clients.Where(c => c.FullName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                        || c.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                        || c.LastName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                        || (c.Email != null && c.Email.Contains(search, StringComparison.OrdinalIgnoreCase))
+                                        );
+            }
+
             var paginatedClients = PaginatedList<ClientIndexViewModel>
                     .Create(clients.ToList(), pageNumber, PageSize);
+
+            ViewData["CurrentSearch"] = search;
 
             return View(paginatedClients);
         }
