@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hairly.Web", "Hairly.Web\Hairly.Web.csproj", "{5ACABFBA-005F-438C-B735-78148C66F22D}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hairly.Services.Core", "Hairly.Services.Core\Hairly.Services.Core.csproj", "{22868CF5-FCFF-44F5-AF04-433B0952A75F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hairly.GCommon", "Hairly.GCommon\Hairly.GCommon.csproj", "{296D6A62-61F3-4000-9494-FC696E56347A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hairly.Services.Tests", "Hairly.Services.Tests\Hairly.Services.Tests.csproj", "{FF54F88A-DD77-4CAE-8693-771FEB10EEF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{296D6A62-61F3-4000-9494-FC696E56347A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{296D6A62-61F3-4000-9494-FC696E56347A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{296D6A62-61F3-4000-9494-FC696E56347A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF54F88A-DD77-4CAE-8693-771FEB10EEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF54F88A-DD77-4CAE-8693-771FEB10EEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF54F88A-DD77-4CAE-8693-771FEB10EEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF54F88A-DD77-4CAE-8693-771FEB10EEF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{85FD263B-1276-4BEE-A2AB-4919234389F3} = {B225015F-4E14-4360-A7BF-47981B8B1A82}
 		{8BE78234-3843-4F95-B061-12E487B4CB02} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{22868CF5-FCFF-44F5-AF04-433B0952A75F} = {E196DE10-4903-4128-B284-9B5D8EA8033C}
+		{FF54F88A-DD77-4CAE-8693-771FEB10EEF4} = {E196DE10-4903-4128-B284-9B5D8EA8033C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB029542-7E81-4EBB-80AC-5F6757F4F61E}
