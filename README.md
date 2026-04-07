@@ -33,39 +33,88 @@
 
 ## 📖 About the Project
 
-**Hairly** is a web application that helps hairdressers manage their daily work. The system allows you to:
+**Hairly** is a comprehensive web application that helps hairdressers manage their business. The system allows you to:
 - Keep track of your clients
 - Manage your services (haircuts, coloring, etc.)
 - Schedule and manage appointments
+- Browse and manage product catalog
+- Collect and display client reviews
+- Enable clients to book their own appointments
 
-This project was built for the **ASP.NET Fundamentals** course at SoftUni. It shows how to build a real web application using ASP.NET Core MVC, Entity Framework, and SQL Server.
-Probably it will be extended in the Advanced course.
+This project was built for the **ASP.NET Advanced** course at SoftUni (extended from the Fundamentals course). It demonstrates best practices in ASP.NET Core MVC, Entity Framework, role-based security, and comprehensive unit testing.
 
 ---
 
 ## ✨ Features
 
-### Client Management
+### 👥 Client Management
 - ✅ Add, edit, view, and delete clients
 - ✅ Store client details (name, phone, email, notes)
 - ✅ See appointment history for each client
+- ✅ **Pagination** - Browse clients 5 per page
+- ✅ **Search & Filter** - Find clients by name, phone, or email
 
-### Service Catalog
+### 💇 Service Catalog
 - ✅ Add and manage your services
 - ✅ Set prices and duration for each service
 - ✅ See how many active appointments use each service
+- ✅ **Pagination** - Browse services 5 per page
+- ✅ **Search & Filter** - Find services by name or filter by price range
 
-### Appointment Scheduling
+### 📅 Appointment Scheduling
 - ✅ Create appointments with client and service
 - ✅ Edit appointments and change status
 - ✅ Track appointment statuses (Scheduled, Completed, Canceled, Did Not Show)
 - ✅ View all appointment details
 - ✅ Today's appointments are highlighted
+- ✅ **Pagination** - Browse appointments 5 per page
+- ✅ **Search & Filter** - Filter by status, date range, client, or service
 
-### Security
+### 🛒 Product Catalog (Admin)
+- ✅ Browse available hair care products
+- ✅ View product details, prices, and stock
+- ✅ **Admin-only** product management (Create, Edit, Delete)
+- ✅ **Pagination** - Browse products 5 per page
+- ✅ **Search & Filter** - Find products by name or filter by price
+
+### ⭐ Review System
+- ✅ Clients can leave reviews after **completed** appointments
+- ✅ 5-star rating with optional comment
+- ✅ One review per appointment (prevent duplicates)
+- ✅ Public review display on Reviews page
+- ✅ Clients can delete their own reviews
+- ✅ **Admin** can delete any review
+- ✅ **Pagination** - Browse reviews 5 per page
+- ✅ **Search & Filter** - Filter by rating or search by client/hairdresser
+
+### 👤 User Appointment Booking
+- ✅ Registered users can book their own appointments
+- ✅ View "My Appointments" page
+- ✅ Auto-create client record on first booking
+- ✅ Track appointment status and history
+
+### 🔐 Role-Based Security
+- ✅ **Three roles**: User, Hairdresser, Admin
+- ✅ **Users** - Book appointments, leave reviews
+- ✅ **Hairdressers** - Manage clients, services, appointments
+- ✅ **Admin** - Full access + Product/Review management
 - ✅ Login required to use the app
 - ✅ Each hairdresser sees only their own data
 - ✅ Deleted items can be recovered (soft delete)
+
+### 🎨 Advanced UI Features
+- ✅ **Custom Error Pages** - 404, 500, and generic error handlers
+- ✅ **Responsive Design** - Works on desktop, tablet, and mobile
+- ✅ **Bootstrap 5** - Modern, clean interface
+- ✅ **Toast Notifications** - Success/error messages
+- ✅ **Confirmation Dialogs** - Before deleting records
+
+### 🧪 Testing & Quality
+- ✅ **82.3% Code Coverage** - 59 comprehensive unit tests
+- ✅ **NUnit** test framework
+- ✅ **In-Memory Database** testing
+- ✅ Tests for all core services
+- ✅ Edge case and validation testing
 
 ---
 
@@ -74,7 +123,7 @@ Probably it will be extended in the Advanced course.
 ### Main Page
 > *Screenshot of the home page will go here*
 
-![Main Page Screenshot](screenshots/main-page.png)
+![Main Page Screenshot](screenshots/home-page.png)
 
 ### Client Management
 > *Screenshot of the clients list*
@@ -90,6 +139,31 @@ Probably it will be extended in the Advanced course.
 > *Screenshot of the appointments page*
 
 ![Appointments Page Screenshot](screenshots/appointments-page.png)
+
+### Completed Appointments Only
+> *Screenshot of filtered completed appointments*
+
+![Completed Appointments Page Screenshot](screenshots/completed-appointments-page.png)
+
+### User Appointments Page
+> *Screenshot of user appointments*
+
+![User Appointments Page Screenshot](screenshots/user-appointments-page.png)
+
+### Products Page
+> *Screenshot of the products page*
+
+![Products Page Screenshot](screenshots/products-page.png)
+
+### Admin Products Page
+> *Screenshot of the manage products page*
+
+![Admin Products Page Screenshot](screenshots/admin-products-page.png)
+
+### Reviews Page
+> *Screenshot of the reviews page*
+
+![Reviews Page Screenshot](screenshots/reviews-page.png)
 
 ---
 
@@ -314,12 +388,29 @@ Then open your browser and go to:
 
 ## 🔑 Default Login
 
-The database comes with a test account you can use:
+The database comes with test accounts for each role:
+
+### Admin + Hairdresser Account
 
 | Field | Value |
 |-------|-------|
 | **Email** | `stylist@hairly.com` |
 | **Password** | `Hairly123!` |
+| **Roles** | Admin, Hairdresser |
+
+**This account can:**
+- ✅ Manage clients, services, appointments
+- ✅ Manage products (Admin only)
+- ✅ Delete any review (Admin only)
+- ✅ Access all hairdresser features
+
+### Secondary Hairdresser Account
+
+| Field | Value |
+|-------|-------|
+| **Email** | `hairdresser@hairly.com` |
+| **Password** | `Hairdresser123!` |
+| **Role** | Hairdresser |
 
 ### How to Login:
 
@@ -332,8 +423,10 @@ You'll see:
 - 10 test clients
 - 12 services
 - 14 appointments
+- 11 products (Browse as public, manage as Admin)
+- 5 reviews
 
-**You can also create your own account by clicking "Register".**
+**You can also create your own account by clicking "Register"** (gets "User" role by default).
 
 ---
 
@@ -342,37 +435,81 @@ You'll see:
 ```
 Hairly-Web-App/
 │
-├── Hairly.Web/                     # Main web app
-│   ├── Controllers/                # Handle user requests
-│   │   ├── ClientController.cs    # Client operations
-│   │   ├── ServiceController.cs   # Service operations
-│   │   └── AppointmentController.cs # Appointment operations
-│   ├── Views/                      # HTML pages
-│   │   ├── Client/                 # Client pages
-│   │   ├── Service/                # Service pages
-│   │   └── Appointment/            # Appointment pages
-│   ├── wwwroot/                    # CSS, JavaScript, images
-│   ├── appsettings.json            # Production config
-│   ├── appsettings.Development.json # Development config
-│   └── Program.cs                  # App startup
+├── Hairly.Web/                          # Main web application
+│   ├── Controllers/                     # Public controllers
+│   │   ├── ClientController.cs         # Client CRUD (Hairdresser)
+│   │   ├── ServiceController.cs        # Service CRUD (Hairdresser)
+│   │   ├── AppointmentController.cs    # Appointment CRUD (Hairdresser)
+│   │   ├── ProductController.cs        # Product browsing (Public)
+│   │   ├── ReviewController.cs         # Review display + Create/Delete
+│   │   ├── UserAppointmentController.cs # User booking (Registered Users)
+│   │   ├── ErrorController.cs          # Custom error pages
+│   │   └── HomeController.cs           # Landing page
+│   ├── Areas/Admin/                     # Admin-only features
+│   │   └── Controllers/
+│   │       └── ProductController.cs    # Product management (Admin)
+│   ├── Views/                           # Razor views
+│   │   ├── Client/                      # Client pages
+│   │   ├── Service/                     # Service pages
+│   │   ├── Appointment/                 # Appointment pages
+│   │   ├── Product/                     # Product browsing
+│   │   ├── Review/                      # Review pages
+│   │   ├── UserAppointment/             # User booking
+│   │   ├── Error/                       # Error pages (404, 500)
+│   │   └── Shared/                      # Layout, partials
+│   ├── wwwroot/                         # Static files
+│   │   ├── css/                         # Custom styles
+│   │   ├── js/                          # JavaScript
+│   │   └── images/                      # Product images, logos
+│   ├── appsettings.json                 # Production config
+│   ├── appsettings.Development.json     # Development config
+│   └── Program.cs                       # App startup + middleware
 │
-├── Hairly.Services.Core/           # Business logic
-│   ├── ClientService.cs
-│   ├── ServiceService.cs
-│   └── AppointmentService.cs
+├── Hairly.Services.Core/                # Business logic layer
+│   ├── AppointmentService.cs           # Appointment operations
+│   ├── UserAppointmentService.cs       # User booking logic
+│   ├── ClientService.cs                # Client operations
+│   ├── ServiceService.cs               # Service operations
+│   ├── ProductService.cs               # Product operations
+│   ├── ReviewService.cs                # Review operations
+│   └── Contracts/                       # Service interfaces
 │
-├── Hairly.Data/                    # Database access
-│   ├── ApplicationDbContext.cs
-│   └── Migrations/
+├── Hairly.Services.Tests/               # Unit tests (NUnit)
+│   ├── AppointmentServiceTests.cs      # 13 tests
+│   ├── UserAppointmentServiceTests.cs  # 7 tests
+│   ├── ReviewServiceTests.cs           # 16 tests
+│   ├── ClientServiceTests.cs           # 10 tests
+│   └── ProductServiceTests.cs          # 13 tests
 │
-├── Hairly.Data.Models/             # Database tables
-│   ├── Client.cs
-│   ├── Service.cs
-│   └── Appointment.cs
+├── Hairly.Data/                         # Data access layer
+│   ├── ApplicationDbContext.cs         # EF Core DbContext
+│   ├── Configurations/                  # Fluent API configs
+│   ├── Migrations/                      # Database migrations
+│   └── Seeding/                         # Seed data
+│       └── IdentitySeeder.cs           # Roles & users
 │
-├── Hairly.Web.ViewModels/          # Data for forms and pages
+├── Hairly.Data.Models/                  # Database entities
+│   ├── Client.cs                        # Client entity
+│   ├── Service.cs                       # Service entity
+│   ├── Appointment.cs                   # Appointment entity
+│   ├── Product.cs                       # Product entity
+│   ├── Review.cs                        # Review entity
+│   └── Enums/
+│       └── AppointmentStatus.cs        # Scheduled, Completed, etc.
 │
-└── Hairly.GCommon/                 # Validation rules
+├── Hairly.Web.ViewModels/               # DTOs for views
+│   ├── Client/                          # Client ViewModels
+│   ├── Service/                         # Service ViewModels
+│   ├── Appointment/                     # Appointment ViewModels
+│   ├── Product/                         # Product ViewModels
+│   ├── Review/                          # Review ViewModels
+│   └── UserAppointment/                 # User booking ViewModels
+│
+└── Hairly.GCommon/                      # Shared constants
+    ├── ValidationConstants.cs          # Field length, regex
+    ├── ErrorMessages.cs                # Error message strings
+    ├── SuccessMessages.cs              # Success message strings
+    └── ApplicationConstants.cs         # Role names, defaults
 ```
 
 ---
@@ -399,6 +536,11 @@ Hairly-Web-App/
 - Click the trash icon
 - Confirm deletion
 
+**Search/Filter clients:**
+- Use the search box to find by name, phone, or email
+- Results update as you type
+- Navigate with pagination buttons (5 clients per page)
+
 ---
 
 ### Managing Services
@@ -409,6 +551,11 @@ Hairly-Web-App/
 3. Enter: Name (e.g., "Haircut"), Price (e.g., 25.00), Duration (e.g., 30 minutes)
 4. (Optional) Add description
 5. Click **"Create Service"**
+
+**Search/Filter services:**
+- Search by service name
+- Filter by price range (Min/Max)
+- Browse with pagination (5 services per page)
 
 ---
 
@@ -431,6 +578,150 @@ Hairly-Web-App/
    - 🔴 **Canceled** - Appointment canceled
    - 🟡 **Did Not Show** - Client didn't come
 3. Click **"Save Changes"**
+
+**Search/Filter appointments:**
+- Filter by status (Scheduled, Completed, etc.)
+- Filter by date range
+- Search by client or service name
+- Browse with pagination (5 appointments per page)
+
+---
+
+### Browsing Products (Public)
+
+**View products:**
+1. Click **"Products"** in the menu
+2. Browse available hair care products
+3. Click on a product to see full details
+
+**Search/Filter products:**
+- Search by product name
+- Filter by price range
+- Navigate with pagination (5 products per page)
+
+**Managing products (Admin only):**
+1. Login as Admin (`stylist@hairly.com`)
+2. Go to **Admin → Products**
+3. Create, Edit, or Delete products
+4. Set stock quantity and upload images
+
+---
+
+### Reviews
+
+**Leaving a review (as User):**
+1. Login to your account
+2. Go to **"My Appointments"**
+3. Find a **Completed** appointment (green status)
+4. Click **"Leave Review"**
+5. Select rating (1-5 stars)
+6. (Optional) Add a comment
+7. Click **"Submit Review"**
+
+**Note:** You can only review completed appointments, and only once per appointment!
+
+**Viewing reviews:**
+- Click **"Reviews"** in the menu
+- See all client reviews with ratings
+- Filter by rating or search by name
+
+**Deleting reviews:**
+- **Users** can delete their own reviews
+- **Admin** can delete any review
+
+---
+
+### User Appointment Booking
+
+**Book your own appointment:**
+1. Create an account or login
+2. Go to **"Book Appointment"**
+3. Select a service
+4. Pick date and time
+5. (Optional) Add notes
+6. Click **"Book Appointment"**
+
+**View your appointments:**
+- Go to **"My Appointments"**
+- See all your bookings
+- Check appointment status
+- Leave reviews after completed appointments
+
+---
+
+---
+
+## 🧪 Testing
+
+The project includes **comprehensive unit tests** with **82.3% code coverage**!
+
+### Test Statistics
+
+```
+Total Tests:      59 passing ✅
+Code Coverage:    82.3% (624/758 lines)
+Test Framework:   NUnit 3.x + Moq
+Database:         EF Core In-Memory
+```
+
+### Services Tested
+
+| Service | Tests | Coverage |
+|---------|-------|----------|
+| AppointmentService | 13 | 93.4% |
+| UserAppointmentService | 7 | 94.8% |
+| ReviewService | 16 | 95.4% |
+| ClientService | 10 | 92.9% |
+| ProductService | 13 | 92.0% |
+
+### Running Tests
+
+**Using Visual Studio:**
+1. Open **Test Explorer** (Test → Test Explorer)
+2. Click **"Run All Tests"**
+3. All 59 tests should pass ✅
+
+**Using Command Line:**
+```bash
+cd Hairly-Web-App
+dotnet test
+```
+
+**Check Code Coverage:**
+```bash
+# Install tools (once)
+dotnet tool install -g dotnet-reportgenerator-globaltool
+
+# Run tests with coverage
+dotnet test --collect:"XPlat Code Coverage"
+
+# Generate HTML report
+reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:Html
+
+# Open report
+start CoverageReport/index.html  # Windows
+open CoverageReport/index.html   # macOS
+```
+
+### What We Test
+
+✅ **Business Logic**
+- Create, Read, Update, Delete operations
+- Data validation and edge cases
+- Permission checks (user vs admin)
+- Soft delete functionality
+
+✅ **Service Integration**
+- Client → Appointment relationships
+- Appointment → Review links
+- User → Client auto-creation
+- Service → Hairdresser filtering
+
+✅ **Edge Cases**
+- Invalid IDs (return null/false)
+- Duplicate prevention (reviews)
+- Status validation (completed appointments)
+- Permission violations
 
 ---
 
@@ -508,10 +799,27 @@ Project Link: [https://github.com/DjankoWE/Hairly-Web-App](https://github.com/Dj
 
 ## 🎓 Acknowledgments
 
-- Built for **SoftUni's ASP.NET Fundamentals** course
+- Built for **SoftUni's ASP.NET Advanced** course (extended from Fundamentals)
 - Thanks to SoftUni trainers and community
-- Bootstrap 5 for the UI design
-- Bootstrap Icons for icons
+- Bootstrap 5 for the responsive UI design
+- Bootstrap Icons for clean iconography
+- NUnit for comprehensive unit testing
+
+---
+
+## 📊 Project Statistics
+
+```
+Lines of Code:       ~15,000+
+Controllers:         8 (7 public + 1 admin)
+Services:            6
+Unit Tests:          59 (82.3% coverage)
+Database Tables:     7 (including Identity)
+ViewModels:          40+
+Migrations:          15+
+Roles:               3 (User, Hairdresser, Admin)
+Seed Data:           50+ records
+```
 
 ---
 
