@@ -1,0 +1,97 @@
+﻿@using Hairly.Web.ViewModels.UserAppointment;
+
+@model UserAppointmentBookViewModel
+
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-calendar-plus"></i> Book New Appointment</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Book" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceId" class="form-label">Select Service</label>
+                            <select asp-for="ServiceId" class="form-select" id="serviceSelect">
+                                <option value="">-- Choose a service --</option>
+                                @foreach (var service in Model.AvailableServices)
+                                {
+                                    <option value="@service.Id"
+                                            data-price="@service.Price"
+                                            data-duration="@service.DurationInMinutes">
+                                        @service.Name - €@service.Price.ToString("F2") (@service.DurationInMinutes min)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3" id="serviceInfo" style="display: none;">
+                            <div class="alert alert-info">
+                                <strong>Selected Service:</strong>
+                                <div id="serviceName"></div>
+                                <div><strong>Price:</strong> €<span id="servicePrice"></span></div>
+                                <div><strong>Duration:</strong> <span id="serviceDuration"></span> minutes</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AppointmentDate" class="form-label">Date & Time</label>
+                            <input asp-for="AppointmentDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                            <small class="form-text text-muted">Please select a date and time for your appointment.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Note" class="form-label">Notes (Optional)</label>
+                            <textarea asp-for="Note" class="form-control" rows="3"
+                                      placeholder="Any special requests or notes for your appointment..."></textarea>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="MyAppointments" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to My Appointments
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-calendar-check"></i> Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('serviceSelect').addEventListener('change', function() {
+            var selected = this.options[this.selectedIndex];
+            var serviceInfo = document.getElementById('serviceInfo');
+
+            if (this.value) {
+                var serviceName = selected.text.split(' - ')[0];
+                var price = selected.dataset.price;
+                var duration = selected.dataset.duration;
+
+                document.getElementById('serviceName').textContent = serviceName;
+                document.getElementById('servicePrice').textContent = parseFloat(price).toFixed(2);
+                document.getElementById('serviceDuration').textContent = duration;
+
+                serviceInfo.style.display = 'block';
+            } else {
+                serviceInfo.style.display = 'none';
+            }
+        });
+    </script>
+}

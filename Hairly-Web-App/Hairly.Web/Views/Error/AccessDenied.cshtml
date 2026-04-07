@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "403 - Access Denied";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 text-center">
+            <div class="error-page">
+                <div class="error-icon mb-4">
+                    <i class="bi bi-shield-lock-fill text-danger" style="font-size: 8rem;"></i>
+                </div>
+
+                <h1 class="display-1 fw-bold text-danger">403</h1>
+                <h2 class="mb-4">@ViewData["ErrorTitle"]</h2>
+                <p class="lead text-muted mb-4">
+                    @ViewData["ErrorMessage"]
+                </p>
+
+                <div class="alert alert-info d-inline-block mb-4" role="alert">
+                    <i class="bi bi-info-circle me-2"></i>
+                    This area is restricted to authorized users only.
+                </div>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="mb-4">
+                        <p class="text-muted">You need to sign in to access this resource.</p>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right"></i> Sign In
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-4">
+                        <p class="text-muted">You are signed in as <strong>@User.Identity.Name</strong></p>
+                        <p class="text-muted">This resource requires different permissions.</p>
+                    </div>
+                }
+
+                <div class="error-suggestions">
+                    <p class="text-muted">Available options:</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+                            <i class="bi bi-house-door"></i> Go Home
+                        </a>
+                        <button onclick="window.history.back()" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Go Back
+                        </button>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-page {
+        padding: 3rem 0;
+    }
+
+    .error-icon i {
+        animation: shake 0.5s;
+        animation-iteration-count: 1;
+    }
+
+    @@keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            transform: translateX(-10px);
+        }
+
+        20%, 40%, 60%, 80% {
+            transform: translateX(10px);
+        }
+    }
+</style>

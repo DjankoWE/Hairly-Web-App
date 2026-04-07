@@ -1,0 +1,85 @@
+﻿@using Hairly.Web.ViewModels.UserAppointment;
+
+@model IEnumerable<UserAppointmentIndexViewModel>
+
+@{
+    ViewData["Title"] = "My Appointments";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-calendar-check"></i> My Appointments</h2>
+        <a asp-action="Book" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Book New Appointment
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> You don't have any appointments yet.
+            <a asp-action="Book" class="alert-link">Book your first appointment</a>.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Hairdresser</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appointment in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@appointment.ServiceName</td>
+                            <td class="align-middle">@appointment.HairdresserName</td>
+                            <td class="align-middle">@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="align-middle">
+                                @switch (appointment.Status)
+                                {
+                                    case Hairly.Data.Models.Enums.AppointmentStatus.Scheduled:
+                                        <span class="badge bg-primary">Scheduled</span>
+                                        break;
+                                    case Hairly.Data.Models.Enums.AppointmentStatus.Completed:
+                                        <span class="badge bg-success">Completed</span>
+                                        break;
+                                    case Hairly.Data.Models.Enums.AppointmentStatus.Canceled:
+                                        <span class="badge bg-danger">Cancelled</span>
+                                        break;
+                                    case Hairly.Data.Models.Enums.AppointmentStatus.DidNotShowed:
+                                        <span class="badge bg-warning">No Show</span>
+                                        break;
+                                }
+                            </td>
+                            <td class="align-middle">
+                                @if (appointment.Status == Hairly.Data.Models.Enums.AppointmentStatus.Completed)
+                                {
+                                    @if (appointment.HasReview)
+                                    {
+                                        <span class="btn btn-sm btn-success disabled">
+                                            <i class="bi bi-star-fill"></i> Reviewed
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Review" asp-action="Create" asp-route-appointmentId="@appointment.Id"
+                                           class="btn btn-sm btn-warning">
+                                            <i class="bi bi-star"></i> Leave Review
+                                        </a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

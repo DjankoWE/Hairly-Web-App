@@ -39,6 +39,13 @@
             public const string ReviewDeleteError = "An error occurred while deleting the review.";
             public const string ReviewNotAllowed = "You can only review completed appointments.";
             public const string ReviewNotAuthorized = "You are not authorized to review this appointment.";
+
+            public const string UserAppointmentBookingError = "Failed to book appointment.";
+
+            public const string AccessDeniedMessage = "You do not have permission to access this resource.";
+            public const string NotFoundMessage = "The page you are looking for doesn't exist.";
+            public const string ServerErrorMessage = "An internal server error occurred. Please try again later.";
+            public const string GenericErrorMessage = "An unexpected error occurred.";
         }
 
         public class SuccessMessages
@@ -63,6 +70,8 @@
 
             public const string ReviewCreatedSuccessfully = "Review created successfully.";
             public const string ReviewDeletedSuccessfully = "Review deleted successfully.";
+
+            public const string UserAppointmentBookedSuccessfully = "Appointment booked successfully!";
         }
     }
 }
